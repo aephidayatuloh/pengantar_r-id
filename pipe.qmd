@@ -1,0 +1,215 @@
+# Operator Pipe {#sec-pipe}
+
+Operator pipe di R sudah dikenal sejak adanya package {magrittr} release. Package ini menyediakan berbagai operator, salah satunya adalah operator `%>%` (pipe). Operator ini kemudian diminati oleh banyak pengguna R terutama karena kemudahan penggunaannya bersama fungsi-fungsi dari package {tidyverse}.
+
+Melihat hal ini, tim pengembang core R akhirnya memutuskan untuk membuat operator pipe milik R sendiri (bukan dari package) pada release R versi 4.1.0. Namun operator pipe ini tampilannya berbeda, yaitu `|>` (dibaca native pipe operator atau native pipe). Dari fungsinya, operator pipe `%>%` dan `|>` memiliki tujuan yang sama.
+
+Pipe operator adalah sebuah operator di R yang pertama kali dikenalkan pada package {magrittr}. Operator ini digunakan untuk membuat “rantai” proses atau urutan function. Operator pipe %>% atau |> dapat kita anggap sebagai kata sambung “selanjutnya”, “kemudian” atau yang setara dengan itu dalam sebuah kalimat atau paragraf. 
+
+Anda mungkin perlu melakukan pengaturan di RStudio untuk dapat menggunakan operator pipe `|>` melalui tombol pintas (_shortcut keys_). Caranya adalah dengan Klik menu **Tools >> Global Options… >> Code**. Hal ini perlu dilakukan karena secara bawaan RStudio akan menuliskan pipe `%>%` ketika kita menekan pintasan **Ctrl+Shift+M** (Windows).  
+
+## Operator Pipe sebagai Konjungsi
+
+Bayangkan kita sebagai manusia yang setiap hari melakukan banyak aktivitas, mulai dari bangun tidur hingga tidur lagi. Ketika seorang manusia pertama kali beraktivitas mengawali hari, umumnya yang pertama kali dilakukan adalah membuka mata. Setelah membuka mata kemudian bangun dari tempat tidur. Selanjutnya dia pergi ke kamar mandi. Di kamar mandi dia melakukan aktivitas selama beberapa waktu. Setelah selesai selanjutnya dia keluar dari kamar mandi dan dia memakai pakaian. Setelah itu ia sarapan, nasi goreng misalnya, dan kemudian berangkat untuk bekerja.
+
+Kita urutkan aktivitas manusia ini menjadi sebuah algoritma:
+
+1.	Objeknya adalah manusia  
+2.	Buka mata pada pukul 05:00   
+3.	Bangun dan beranjak dari tempat tidur pukul 05:15  
+4.	Pergi ke kamar mandi pkl 05:30  
+5.	Mandi selama 15 menit  
+6.	Berpakaian (baju, celana dll)  
+7.	Sarapan nasi goreng  
+8.	Pergi berangkat kerja pkl 07:00  
+
+| No | Aktivitas | Function dan Parameter | 
+|:---|:----------|:-----| 
+| 1 | Buka mata | `buka_mata(objek, waktu = "05:00")` | 
+| 2 | Bangun dan beranjak dari tempat tidur | `bangun(objek, waktu = "05:15")` |   
+| 3 | Pergi ke kamar mandi | `kamar_mandi(objek, waktu = "05:30")` |  
+| 4 | Mandi | `mandi(objek, durasi = 15)` | 
+| 5 | Berpakaian | `berpakaian(objek, baju = "kemeja", celana = "jeans")` |   
+| 6 | Sarapan | `saparan(objek, menu = "nasi goreng")` |   
+| 7 | Berangkat kerja | `berangkat(objek, waktu = "07:00")` |
+
+: Tabel x.x  
+ 
+Jika aktivitas yang berupa fungsi di atas kita susun maka akan menjadi:
+
+```{r}
+#| eval: false
+aktivitas <-  berangkat(sarapan(pakaian(mandi(kamar_mandi(bangun(buka_mata(manusia, waktu = "05:00"), waktu = "05:15"), waktu = "05:30"), durasi = 15), baju = "kemeja", celana = "jeans"), menu = "nasi goreng"), waktu = "07:00")
+```
+
+Atau dengan script yang lebih rapi menjadi seperti berikut.
+
+```{r}
+#| eval: false
+aktivitas <- berangkat(
+ sarapan(
+  pakaian(
+   mandi(
+    kamar_mandi(
+     bangun(
+      buka_mata(manusia, waktu = "05:00"), 
+      waktu = "05:15"), 
+     waktu = "05:30"), 
+    durasi = 15), 
+   baju = "kemeja", celana = "jeans"), 
+  menu = "nasi goreng"), 
+waktu = "07:00")
+
+```
+
+Cara lain adalah dengan membuat objek R untuk hasil dari masing-masing fungsi atau aktivitas.
+
+```{r}
+#| eval: false
+aktivitas1 <- buka_mata(manusia, waktu = "05:00")
+aktivitas2 <- bangun(aktivitas1, waktu = "05:15")
+aktivitas3 <- kamar_mandi(aktivitas2, waktu = "05:30")
+aktivitas4 <- mandi(aktivitas3, durasi = 15)
+aktivitas5 <- pakaian(aktivitas4, baju = "kemeja", celana = "jeans")
+aktivitas6 <- sarapan(aktivitas5, menu = "nasi goreng")
+aktivitas  <- berangkat(aktivitas6, waktu = "07:00")
+
+```
+
+Salah satu cara lainnya adalah dengan menggunakan operator pipe `|>`. Anda juga dapat menggunakan operator pipe `%>%` untuk hal yang sama. 
+
+Perhatikan contoh berikut ini.
+
+```{r}
+#| eval: false
+
+aktivitas <- manusia |>
+ buka_mata(waktu = "05:00") |>
+ bangun(waktu = "05:15") |>
+ kamar_mandi(waktu = "05:30") |>
+ mandi(durasi = 15) |>
+ pakaian(baju = "kemeja", celana = "jeans") |>
+ sarapan(menu = "nasi goreng") |>
+ berangkat(waktu = "07:00")
+```
+
+Jika diperhatikan baik-baik, operator `|>` menjadikan objek di sebelah kiri atau sebelumnya (LHS) sebagai argumen pertama untuk fungsi yang ada di sebelah kanan atau setelahnya (RHS). Dari contoh di atas kita dapat melihat bahwa fungsi-fungsi tersebut dikerjakan berurutan. Misalnya objek manusia membuka matanya pada pukul 05:00 pagi. Kemudian manusia yang sudah membuka mata ini bangun atau beranjak dari tempat tidurnya 15 menit kemudian. Setelah itu, manusia yang sudah membuka mata dan bangun dari tempat tidurnya ini menuju ke kamar mandi dan melakukan aktivitas mandi, dan seterusnya. Setelah semua kegiatan atau fungsi-fungsi tersebut dilakukan secara berurutan, hasil akhirnya disimpan dalam sebuah objek baru bernama aktivitas.
+
+## Contoh Penggunaan Operator Pipe
+
+Ketika membuat program yang terdiri dari beberapa tahap proses atau function yang perlu dilakukan secara berurutan, kita dapat membuat perintah dengan beberapa cara seperti yang sudah dicontohkan di atas. Misalnya kita ingin melakukan penyiapan data dari sebuah dataframe. Proses penyiapan data ini terdiri dari tahap pemilihan variable tertentu, kemudian dilanjutkan dengan proses memilih baris tertentu saja sesuai dengan kriteria yang diterapkan pada suatu variable, dan mengurutkan data berdasarkan variable yang diinginkan. 
+
+Ketika kita bicara tentang function, maka umumnya function akan memiliki argumen yang berisi objek yang akan diproses olehnya. Misalnya `mean(1:10)` maka `mean()` adalah sebuah function dan vector `1:10` adalah objek sebagai nilai dari argumen yang akan diproses. Pada contoh program di atas, objek atau hasil dari sebuah function sebelum operator Pipe akan menjadi argumen untuk function setelah operator tersebut.
+Secara default objek atau hasil dari sebuah function akan menjadi nilai bagi argumen pertama di function berikutnya. Misalnya ada sebuah function `f()` dengan argumen `x`, `yaitu f(x)`, dapat dituliskan dalam sebuah program menggunakan Pipe seperti berikut.
+
+```{r}
+#| eval: false
+x |> f()
+```
+
+Sebagai contoh pada `mean(1:10)` kita dapat menuliskannya sebagai `1:10 |> mean()`. Jika sebuah function memiliki lebih dari satu argumen, misalnya `f(x, y)` maka kita dapat menuliskannya dalam bentuk `x |> f(y)`. Sebagai contoh function `mean()` juga mempunyai argumen `na.rm = TRUE` untuk membuang missing value dari perhitungan. Maka `mean(1:10, na.rm = TRUE)` akan `menjadi 1:10 |> mean(na.rm = TRUE)`. 
+
+Pada kasus function yang memiliki argumen lebih dari satu, jika objek sebelum Pipe yang akan menjadi nilai bagi argumen selain argumen pertama maka kita dapat menggantikan nilai pada argumen tersebut dengan tanda titik.
+
+Contoh pada function `sub()` yang memiliki argumen pattern, replacement dan `x` yang harus diisi. Misalnya ada sebuah string, yaitu Gunakan Excel. Kita akan mengganti kata Excel dengan R. Maka dapat kita tuliskan seperti berikut. 
+
+```{r}
+sub(pattern = "Excel", replacement = "R", x = "Gunakan Excel")
+
+```
+
+Bagaimana jika kita gunakan Pipe `|>`? Kita dapat menuliskannya seperti berikut.
+
+```{r}
+"Gunakan Excel" |>
+  sub(pattern = "Excel", replacement = "R", x = _)
+
+```
+
+Selanjutnya jika ada sebuah function lain yang dapat memproses hasil dari function `f(x)`, misalnya `g(z)`. Nilai dari argumen `z` adalah output dari function `f(x)`. Kita tuliskan seperti berikut.
+
+```{r}
+#| eval: false
+g(z = f(x))
+```
+
+Jika kita ingin menggunakan Pipe maka dapat kita tuliskan seperti berikut.
+
+```{r}
+#| eval: false
+f(x) |> g() 
+# atau 
+x |> f() |> g()
+```
+
+Biasanya ketika membuat program di R menggunakan Pipe, function setelah Pipe akan dibuat di baris berikutnya. Hal ini dilakukan untuk memudahkan ketika “membaca” sebuah program atau ketika melakukan debugging. Tentu saja ini hanya sebuah kebiasaan dan preferensi seseorang.
+
+```{r}
+#| eval: false
+x |> 
+  f() |> 
+  g()
+```
+
+Sekarang mari kita lakukan dengan contoh yang lebih riil. Misalnya kita gunakan dataframe `mtcars`. Dari data ini kita akan memilih yang nilai dari variable `mpg` lebih dari 21 (`mpg > 21`). Kemudian dari hasil yang diperoleh, hanya dipilih variable `mpg`, `hp`, `am`, `cyl`, dan `gear`. Setelah itu kita membuat variable baru berupa nilai logaritma natural dari variable `mpg`.
+
+```{r}
+mtcars |> 
+  subset(subset = mpg > 21) |> 
+  subset(select = c(mpg, hp, am, cyl, gear)) |> 
+  transform(log_mpg = log(mpg))
+
+```
+
+## Perbedaan Antara `|>` dan `%>%`
+
+Berikut ini kita akan membahas beberapa perbedaan antara Native Pipe operator `|>` dan Pipe dari {magrittr} atau {tidyverse}, yaitu `%>%`. Perbedaan ini perlu diketahui sehingga Anda memilih atau menggunakan pipe dengan benar. Untuk dapat mengikuti contoh dibawah ini Anda perlu menjalankan perintah di bawah ini terlebih dahulu.
+
+```{r}
+library(magrittr)
+f <- function(x, y) {
+  x + y
+}
+
+```
+
+* Perbedaan pertama adalah dari versi R yang dapat digunakan. Pipe `|>` baru diperkenalkan sejak pembaruan R versi 4.1.0, sehingga hanya bisa digunakan pada R versi tersebut atau lebih baru. Pipe `%>%` diperkenalkan melalui package {magrittr} sejak R versi 3.5.0 sehingga dapat digunakan pada R versi lebih lama dibandingkan dengan pipe `|>`. 
+
+* Pada dasarnya operator pipe meneruskan objek yang ada di sebelah kiri atau sebelumnya sebagai argument pertama dari function di sebelah kanan atau setelahnya. Namun Anda kadang perlu agar objek di sebelah kiri menjadi nilai pada argumen yang bukan merupakan argument pertama. Misalnya sebuah function `f(x, y)` dan 10 adalah nilai untuk `x`, sedangkan 5 untuk `y`. Kita dapat menuliskan `10 %>% f(5)`, `10 %>% f(., 5)`, `10 %>% f(., y = 5)` atau `10 %>% f(x = ., y = 5)` yang akan sama dengan `f(10, 5)` atau `f(x = 10, y = 5)`. Kita juga dapat menuliskan `5 %>% f(10, y = .)` jika objek di sebelah kiri adalah nilai untuk `y`. Untuk pipe `%>%` hal ini tidak ada masalah. Namun pipe `|>` baru bisa melakukan hal seperti ini sejak R versi 4.2.0, yaitu dengan menggunakan `_` (_underscore_) sebagai _placement_. Namun sampai saat buku ini ditulis masih terdapat batasan untuk dapat menggunakan fitur ini. Yaitu hanya bisa untuk argumen yang bernama. Misalnya `10 |> f(5)` atau `10 |> f(y = 5)` tidak ada masalah. Namun Anda tidak bisa menuliskan `10 |> f(_, y)` karena akan muncul error yang memberitahukan Anda bahwa “_pipe placeholder can only be used as a named argument_”. Oleh karena itu jika ingin menggunakan pengganti (placeholder) untuk pipe `|>` Anda harus menyebutkan nama argumennya. Jadi `10 |> f(x = _, 5)` akan berhasil. Hal yang sama juga berlaku untuk argumen selain argumen pertama. Misalnya `5 |> f(10, _)` akan _error_, gunakanlah `5 |> f(10, y = _)`. 
+
+* Objek yang di sebelah kiri dapat digunakan lebih dari satu pengganti saat kita menggunakan pipe `%>%`. Pada pipe |> hanya dapat digunakan sebagai nilai argumen dengan satu pengganti. Contohnya adalah `10 %>% f(x = ., y = .)` akan dapat berjalan dengan baik. Namun `10 %>% f(x = _, y = _)` akan menghasilkan error “_pipe placeholder may only appear once_”. 
+
+* Sejak R versi 4.3.0 pipe `|>` dapat digunakan untuk mengambil variable dengan `$`, `[[`, atau `[`. Contohnya adalah dengan `mtcars |> _$mpg`, `mtcars |> _[, "mpg"]`, atau `mtcars |> _[["mpg"]]`. 
+
+* Pipe `%>%` tidak memerlukan tanda kurung jika function di sebelah kanan atau setelahnya tidak memerlukan argumen lain. Contohnya `1:10 %>% mean()` dapat kita tuliskan `1:10 %>% mean`. Namun untuk pipe `|>` tetap mengharuskan ada tanda kurung.
+
+* Pipe `%>%` dapat diawali dengan `.` (tanda titik) untuk menjadikannya sebuah function daripada langsung menjalankan perintah pipe tersebut. 
+
+* Pipe `|>` relatif lebih cepat dibandingkan dengan `%>%`. 
+
+```{r}
+library(magrittr)
+bench::mark(
+  base = mtcars |> 
+    subset(subset = mpg > 21) |> 
+    subset(select = c(mpg, hp, am, cyl, gear)) |> 
+    transform(log_mpg = log(mpg)),
+  magrittr = mtcars %>% 
+    subset(subset = mpg > 21) %>% 
+    subset(select = c(mpg, hp, am, cyl, gear)) %>% 
+    transform(log_mpg = log(mpg)), 
+  iterations = 1000
+)
+
+```
+
+Jadi sekarang Anda sudah tahu kapan harus menggunakan pipe `|>` atau `%>%`. Tentu saja Anda juga dapat menggunakan kedua pipe tersebut pada pipeline yang sama jika dibutuhkan. 
+
+```{r}
+library(magrittr)
+1:10 |> 
+  mean() %>% 
+  f(x = ., y = .)
+
+```
+

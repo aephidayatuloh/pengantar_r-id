@@ -1,0 +1,67 @@
+project:
+  type: book
+  output-dir: _book
+  preview: 
+    port: 4200
+    browser: false
+
+book:
+  reader-mode: true
+  title: "Pengantar Statistika dan Data Science"
+  subtitle: Statistika Modern dengan R dan RStudio
+  author: "Aep Hidayatuloh"
+  date: "7/6/2024"
+  cover-image: img/sds4.png
+  favicon: img/favc.png
+  sidebar: 
+    logo: img/favc.png
+    title: Pengantar Statistika dan Data Science
+    style: floating
+  output-file: "pengantar-statistika-data-science-R-dan-RStudio"
+  chapters:
+    - index.qmd
+    
+    - pengantar.qmd
+    - part: R dan RStudio
+      chapters: 
+        - intror.qmd
+        - basicr.qmd
+        - ifloop.qmd
+        - dataframe.qmd
+        - import.qmd
+        - pipe.qmd
+        
+    - part: Eksplorasi dan Visualisasi
+      chapters: 
+        - explore.qmd
+        - ggplot2.qmd
+    
+    - part: Tidyverse
+      chapters: 
+        - tidyverse.qmd
+        - dataprep.qmd
+        
+    - part: Statistik
+      chapters: 
+        - random.qmd
+        - probability.qmd
+        - hypothesis.qmd
+        - corr.qmd
+        - adk.qmd
+        - anova.qmd
+        # - tw-anova.qmd
+        
+    - part: Regresi
+      chapters: 
+        - regression.qmd
+        - logreg.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+    # css: style.css
+  pdf:
+    documentclass: scrreprt
+

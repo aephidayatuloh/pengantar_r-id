@@ -1,0 +1,477 @@
+# Alur Kendali dan Pengulangan {#sec-if-loop}
+
+## Operator Logika
+
+Ketika membahas alur  kendali pada suatu bahasa pemrograman pasti akan membahas tentang operator logika atau logical operator. Nilai dari logika akan selalu bernilai TRUE atau FALSE. Dengan kata lain nilai dari operator logika merupakan tipe boolean. Berikut ini tabel operator logika dan penjelasannya.
+
+| Operator | Logika | 
+|:--------:|:-------|
+| `&` | dan (AND) | 
+| `|` | atau (OR) |
+| `!` | negasi (NOT) |
+| `==` | sama dengan (EQUAL) | 
+| `!=` | tidak sama dengan (NOT EQUAL) |
+| `%in%` | ada diantara (IN) |
+| `>` | lebih besar dari (GREATER) | 
+| `<` | lebih kecil dari (LESS) | 
+| `>=` | lebih besar dari atau sama dengan (GREATER OR EQUAL) | 
+| `<=` | lebih kecil dari atau sama dengan (LESS OR EQUAL) | 
+| `&&` | dan (AND) (vector) | 
+| `||` | atau (OR) (vector) |
+
+: Tabel 3.1 Operator Logika
+
+Selanjutnya contoh nilai dari operator logika. Misalnya untuk `p` bernilai `TRUE` dan `q` bernilai `TRUE`, maka nilai untuk `p & q`  (`p` dan `q`) adalah `TRUE & TRUE` yaitu `TRUE`. Pada Tabel 3.2 kita dapat melihat daftar hasil operator logika. 
+
+| `p` | `q` | `p & q` | `p | q` | `!p` | `p == q` | `p != q` | 
+|-----|-----|---------|---------|------|----------|----------|
+| `TRUE` | `TRUE` | `TRUE` | `TRUE` | `FALSE` | `TRUE` | `FALSE` | 
+| `TRUE` | `FALSE` | `FALSE` | `TRUE` | `FALSE` | `FALSE` | `TRUE` | 
+| `FALSE` | `TRUE` | `FALSE` | `TRUE` | `TRUE` | `FALSE` | `TRUE` | 
+| `FALSE` | `FALSE` | `FALSE` | `FALSE` | `TRUE` | `TRUE` | `FALSE` | 
+
+: Tabel 3.2 Tabel Logika
+
+Operator lain yang juga sering digunakan adalah `%in%` (operator in). Operator ini digunakan untuk mengetahui apakah suatu nilai yang ada dalam sebuah vector. Misalnya contoh berikut ini.
+
+```{r}
+2 %in% 1:5
+```
+
+Program di atas artinya untuk mengetahui apakah nilai numerik 2 ada diantara vector numeric yang nilainya 1 sampai dengan 5. Karena nilai 2 ada diantara 1 sampai dengan 5 maka nilai dari program di atas adalah TRUE. Begitu juga jika nilai yang ingin diketahui adalah character. Seperti contoh berikut ini.
+
+```{r}
+"a" %in% c("ab", "a", "b", "ac")
+
+```
+
+Program di atas mencari nilai character "a" yang sama persis diantara nilai vector `c("ab", "a", "b", "ac")`. Maka yang dianggap sama adalah elemen kedua dari vector tersebut, yaitu `"a"` pada vector. Karena `"a"` tidak sama dengan `"ab"` atau `"ac"`.
+
+Operator logika terakhir yang akan kita bahas adalah operator `&&` dan `||`. Operator `&&` adalah operator AND dan `||` adalah OR. Mungkin Anda bertanya, "Apa perbedaannya dengan operator `&` dan `|`?". 
+
+
+Ingat bahwa operator `&` dan `|` mengevaluasi masing-masing nilai ketika yang dibandingkan adalah vector. Misalnya `c(TRUE, FALSE) && c(FALSE, TRUE)` akan menghasilkan dua nilai, yaitu `c(FALSE, FALSE)` karena masing-masing elemen dievaluasi terhadap pasangannya (_element wise_). 
+
+:::{.callout-important}
+Pada operator `&&` dan `||` yang dievaluasi hanya elemen pertama pada setiap vector. Kedua operator ini hanya bisa digunakan jika Anda masih menggunakan R versi 4.2.3 atau lebih rendah. Artinya Anda tidak bisa menggunakan kedua operator tersebut jika Anda menggunakan R versi 4.3.0 atau lebih baru. Oleh karena itu cukup menggunakan operator `&` atau `|`.
+:::
+
+:::{.callout-note}
+Pembahasan berikut ini hanya berlaku jika Anda menggunakan R versi 4.2.3 atau lebih rendah. Jika Anda sudah menggunakan R versi 4.3.0 atau lebih baru Anda bisa lompati sampai ke pembahasan Operator Perbandingan
+:::
+
+```{r}
+p <- c(TRUE, TRUE, FALSE, FALSE) 
+p
+
+q <- c(TRUE, FALSE, TRUE, FALSE) 
+q
+```
+
+Dari program di atas kita usdah mempunyai dua buah vector, `p` dan `q`. Dua buah vector ini masing-masing berisi empat elemen berupa nilai logical (`TRUE` atau `FALSE`). Jika kita gunakan operator `&` pada `p & q` maka hasilnya adalah evaluasi dari masing-masing elemen sehingga hasilnya akan ada empat elemen.
+
+```{r}
+p & q
+```
+
+Berbeda halnya ketika kita gunakan operator `&&`. Ketika kita gunakan operator `&&` pada `p && q` maka yang akan dievaluasi adalah elemen pertama dari `p` dan `q`. Elemen pertama dari `p` adalah `TRUE` dan elemen pertama dari `q` adalah `TRUE` juga. Maka hasil dari `p && q` adalah `TRUE & TRUE` yaitu `TRUE`. Perhatikan bahwa karena hanya elemen pertama dari masing-masing vector yang dievaluasi sehingga hasilnya adalah sebuah vector dengan satu elemen. 
+
+:::{.callout-important}
+Jika Anda menggunakan R versi 4.3.0 atau lebih baru maka perintah berikut ini akan menghasilkan error  
+`Error in p && q : 'length = 4' in coercion to 'logical(1)'`
+:::
+
+```{r}
+#| eval: false
+p && q
+## Warning in p && q: 'length(x) = 4 > 1' in coercion to 
+## 'logical(1)' 
+## Warning in p && q: 'length(x) = 4 > 1' in coercion to 
+## 'logical(1)'
+## [1] TRUE
+
+```
+
+Contoh lain agar Anda lebih paham mengenai konsep operator `&&` ini.
+
+```{r}
+#| eval: false
+c(TRUE, FALSE) && c(FALSE, TRUE)
+## Warning in c(TRUE, FALSE) && c(FALSE, TRUE): 'length(x) 
+## = 2 > 1' in coercion to 'logical(1)' 
+## Warning in c(TRUE, FALSE) && c(FALSE, TRUE): 'length(x) 
+## = 2 > 1' in coercion to 'logical(1)'
+## [1] FALSE
+
+c(FALSE, FALSE) && c(FALSE, TRUE)
+## Warning in c(FALSE, FALSE) && c(FALSE, TRUE): 
+## 'length(x) = 2 > 1' in coercion to 'logical(1)'
+## [1] FALSE
+
+c(TRUE, TRUE) && c(FALSE, TRUE)
+## Warning in c(TRUE, TRUE) && c(FALSE, TRUE): 'length(x) 
+## = 2 > 1' in coercion to 'logical(1)'
+## Warning in c(TRUE, TRUE) && c(FALSE, TRUE): 'length(x) 
+## = 2 > 1' in coercion to 'logical(1)'
+## [1] FALSE
+
+c(TRUE, FALSE) && TRUE
+## Warning in c(TRUE, FALSE) && TRUE: 'length(x) = 2 > 1' 
+## in coercion to 'logical(1)'
+## [1] TRUE
+
+FALSE && c(FALSE, TRUE)
+## [1] FALSE
+Konsep yang serupa juga berlaku untuk operator ||.
+p || q
+## Warning in p || q: 'length(x) = 4 > 1' in coercion to 'logical(1)'
+## [1] TRUE
+c(TRUE, FALSE) || c(FALSE, TRUE)
+## Warning in c(TRUE, FALSE) || c(FALSE, TRUE): 'length(x) = 2 > 1' in coercion to ## 'logical(1)'
+## [1] TRUE
+c(FALSE, FALSE) || c(FALSE, TRUE)
+## Warning in c(FALSE, FALSE) || c(FALSE, TRUE): 'length(x) = 2 > 1' in coercion ## to 'logical(1)'
+## Warning in c(FALSE, FALSE) || c(FALSE, TRUE): 'length(x) = 2 > 1' in coercion ## to 'logical(1)'
+## [1] FALSE
+c(TRUE, TRUE) || c(FALSE, TRUE)
+## Warning in c(TRUE, TRUE) || c(FALSE, TRUE): 'length(x) = 2 > 1' in coercion to ## 'logical(1)'
+## [1] TRUE
+c(TRUE, FALSE) || TRUE
+## Warning in c(TRUE, FALSE) || TRUE: 'length(x) = 2 > 1' in coercion to ## 'logical(1)'
+## [1] TRUE
+FALSE || c(FALSE, TRUE)
+## Warning in FALSE || c(FALSE, TRUE): 'length(x) = 2 > 1' in coercion to ## 'logical(1)'
+## [1] FALSE
+
+```
+
+
+## Operator Perbandingan
+
+Ketika bekerja dengan sebuah bahasa pemrograman dan bidang data science tentu saja kita akan berhadapan dengan kebutuhan untuk membandingkan satu nilai dengan nilai tertentu. Berikutnya adalah operator perbandingan. Operator-operator ini umumnya digunakan untuk membandingkan nilai numerik.
+
+```{r}
+1 > 2 # Apakah 1 lebih besar dari 2?
+```
+
+```{r}
+2 > 1 # Apakah 2 lebih besar dari 1?
+```
+
+Ketika sebuah nilai numerik dibandingkan dengan sebuah vector numerik yang mempunyai `length()` lebih dari 1, maka nilai numerik di sebelah kiri operator akan dievaluasi terhadap masing-masing nilai pada vector tersebut. Misalnya contoh berikut ini.
+
+```{r}
+2 > 1:5 # Apakah 2 lebih besar dari nilai setiap elemen vector tersebut? 
+```
+
+Nilai 2 disebelah kiri operator dievaluasi terhadap masing-masing elemen pada vector sebelah kanan. Maka dari itu karena 2 lebih besar dari 1 hasilnya adalah `TRUE.` Selanjutnya karena 2 tidak lebih besar dari 2, 3, 4, dan 5 maka sisanya bernilai `FALSE.` Perhatikan contoh berikut ini.
+
+```{r}
+2 >= 1:5
+2 < 1:5
+2 <= 1:5
+```
+
+## Missing Value  
+
+Data hilang atau missing value di R dinotasikan dengan `NA` (_Not Available_). Untuk menunjukan sebuah nlai yang tidak mungkin diketahui hasilnya dari sebuah operasi aritmatika, misalnya sebuah nilai numerik yang dibagi dengan 0 (nol), nilainya dinotasikan dengan `NaN` (_Not a Number_). Oleh karena itu kita tidak diperbolehkan untuk membuat objek dengan nama `NA` atau `NaN`.
+
+Untuk mengetahui suatu nilai adalah missing value atau bukan kita dapat menggunakan fungsi `is.na(x)`. Nilai dari fungsi ini adalah **Boolean** (`TRUE` atau `FALSE`). Input x untuk fungsi `is.na()` dapat berupa objek atomic vector, list, juga dataframe.
+
+```{r}
+x <- NA
+is.na(x)
+
+x <- c(1, 2, 2, NA, 5, 1, 2, NA)
+is.na(x)
+```
+
+Dapatkah Anda mengetahui kenapa hasil dari perintah di atas Seperti itu?
+
+
+## Fungsi `if()` 
+
+Alur kendali pada bahasa pemrograman R yang umum digunakan adalah fungsi `if()`. Argumen yang dibutuhkan pada fungsi `if()` adalah sebuah vector logical tunggal bernilai `TRUE` atau `FALSE.` Untuk mendapatkan nilai logical ini kita gunakan operator logika yang sudah kita bahas sebelumnya.
+
+```{r}
+2 < 3
+```
+
+Bentuk umum dari perintah menggunakan `if()` adalah sebagai berikut.
+
+```{r}
+#| eval: false
+if(kondisi) ekspresi
+```
+
+Berikut ini contoh program untuk menjalankan sebuah perintah menuliskan sebuah teks ketika kondisi bernilai benar.
+
+```{r}
+if(2 < 3) { 
+  print("Kondisi tersebut benar")
+}
+```
+
+Jika ada perintah yang akan dijalankan ketika masing-masing kondisi bernilai benar atau salah, maka bentuk umumnya adalah sebagai berikut. Ekspresi atau perintah yang ada pada kondisi `else{}` akan dijalankan ketika kondisi pada `if()` bernilai salah.
+
+```{r}
+#| eval: false
+if(kondisi){ 
+  ekspresi jika kondisi benar 
+} else { 
+  ekspresi jika kondisi salah 
+}
+
+```
+
+Pada contoh berikut ini kita menjalankan perintah untuk melakukan pemeriksaan nilai di dalam `if()`, yaitu apakah 2 lebih besar dari 3? Jika benar (`TRUE`) maka jalankan perintah `print("Kondisi tersebut benar")` dan akan menampilkan string tersebut di _Console_. Namun jika pemeriksaan kondisi tersebut bernilai salah (`FALSE`) maka yang dijalankan adalah perintah `print("Kondisi tersebut salah")` dan akan menampilkan hasil yang ada di dalam `else{}`. Seperti yang kita tahu bahwa 2 tidak lebih besar dari 3 sehingga nilai pemeriksaan kondisi `2 > 3` adalah `FALSE`. Oleh karena itu perintah yang dijalankan adalah yang berada di dalam `else{}`.
+
+```{r}
+if(2 > 3){ 
+  # Jika kondisi benar 
+  print("Kondisi tersebut benar") 
+} else { 
+  # Jika kondisi salah 
+  print("Kondisi tersebut salah") 
+}
+```
+
+Jika kita memiliki lebih dari 2 kondisi sehingga tidak cukup dengan if-else maka kita dapat menambahkan pemeriksaan kondisi berikutnya dengan `else if()`. Misalnya pada contoh perintah di bawah ini yang pertama kali dilakukan adalah melakukan pemeriksaan kondisi pertama. Jika kondisi pertama terpenuhi (`TRUE`) maka perintah yang akan dijalankan adalah ekspresi jika kondisi pertama benar. Tetapi jika kondisi pertama bernilai `FALSE` maka akan dilakukan pemeriksaan kondisi kedua pada bagian `else if()`. Pemeriksaan kondisi kedua ini hanya terjadi jika kondisi pertama tidak terpenuhi atau bernilai `FALSE`. Jika kondisi pertama terpenuhi maka kondisi berikutnya tidak akan diperiksa. Jika kondisi kedua tidak terpenuhi (`FALSE`) maka akan dilanjutkan ke pemeriksaan kondisi berikutnya. Jika tidak ada lagi `else if()` dan hanya ada `else{}` maka perintah yang akan dijalankan adalah yang ada di dalam `else{}`.
+
+```{r}
+#| eval: false
+if(kondisi pertama){ 
+  ekspresi jika kondisi pertama benar 
+} else if(kondisi kedua){ 
+  ekpresi jika kondisi kedua benar
+} else {
+  ekspresi jika semua kondisi sebelumnya salah 
+}
+```
+
+:::{.callout-important}
+Perhatikan juga bahwa ketika Anda menggunakan if-else di R maka penempatan `else` harus ada pada baris yang sama dengan tanda kurung kurawal penutup dari `if` atau `else if` sebelumnya.
+:::
+
+Berikut ini contoh penggunaan alur kendali yang benar.
+
+```{r}
+#| eval: false
+if(kondisi){  
+  ekspresi kondisi benar  
+} else {  
+  ekspresi kondisi salah  
+}	
+```
+
+Berikut ini contoh penulisan yang salah.
+
+```{r}
+#| eval: false
+if(kondisi){  
+  ekspresi kondisi benar  
+}
+else {  
+  ekspresi kondisi salah  
+}	
+```
+
+
+## Fungsi `ifelse()`  
+
+Di atas kita sudah membahas contoh sederhana penggunaan `if()` dengan hanya satu kondisi. Bagaimana jika kondisinya adalah sebuah vector yang berisi lebih dari satu nilai benar atau salah? Kita ingat kembali bahwa sebelumnya kita telah membuat sebuah objek bernama `p` yang merupakan sebuah vector berisi nilai logical, yaitu {`TRUE`, `TRUE`, `FALSE`, `FALSE`}. Ketika Anda menggunakan R versi < 4.2.0 dengan kondisi pada fungsi `if()` mempunyai lebih dari satu nilai (length > 1) maka hal yang pertama akan muncul adalah warning seperti berikut ini.
+
+```{r}
+#| eval: false
+p <- c(TRUE, TRUE, FALSE, FALSE) 
+if(p){ 
+  print(p) 
+} 
+## the condition has length > 1 and only the first element will be used
+## [1] TRUE TRUE FALSE FALSE
+```
+
+Dari _warning_ di atas dapat diketahui bahwa fungsi `if()` hanya menggunakan elemen pertama dari vector `p` sebagai kondisi yang dievaluasi. Karena nilai pertama dari vector `p` adalah `TRUE` maka perintah `print(p)` dijalankan, yaitu mencetak semua nilai pada vector `p`. Jika kita buat negasi dari `p` dengan `!p`, maka elemen pertamanya menjadi `FALSE` sehingga perintah `print(p)` tidak akan dijalankan. Namun tetap ada _warning_ yang muncul karena kondisi yang diberikan memiliki lebih dari satu nilai logical.
+
+Tetapi jika Anda menggunakan R versi >= 4.2.0 dan kondisi pada pada fungsi `if()` lebih dari 1 (length > 1) maka akan muncul error seperti berikut.
+
+```{r}
+#| eval: false
+Error in if (p) { : the condition has length > 1
+```
+
+Pada perubahan ketika R versi 4.2.0 release Anda akan menemukan pemberitahuan sebagai berikut.
+
+> Calling if() or while() with a condition of length greater than one gives an error rather than a warning. Consequently, environment variable R_CHECK_LENGTH_1_CONDITION no longer has any effect.
+
+Untuk dapat melakukan evaluasi pada masing-masing nilai logical dari vector `p`, kita dapat gunakan fungsi `ifelse()`. Bentuk umumnya sedikit berbeda dibandingkan dengan fungsi `if()` yang sudah kita bahas.
+
+```{r}
+#| eval: false
+ifelse(test, yes, no)
+```
+
+Fungsi `ifelse()` akan mengevaluasi setiap nilai yang ada pada `test` dan menjalankan perintah yang bersesuaian. Misalnya, karena nilai elemen pertama dan kedua pada vector `p` adalah `TRUE` maka perintah pada argumen `yes` akan dijalankan. Namun ketika elemen ketiga dan keempat bernilai `FALSE` maka perintah pada argumen `no` akan dijalankan. Output dari fungsi `ifelse()` adalah berupa vector.
+
+```{r}
+ifelse(test = p == TRUE, yes = "benar", no = "salah")
+
+# atau 
+
+ifelse(p, "benar", "salah")
+ifelse(!p, "benar", "salah")
+```
+
+
+
+Karena R adalah bahasa pemrograman yang vectorized sehingga artinya kita tidak perlu melakukan pengulangan atau looping untuk setiap elemen pada vector di atas.
+
+
+## Fungsi `switch()`  
+
+Selain fungsi `if()` yang dapat digunakan sebagai alur kendali, di R juga terdapat fungsi `switch()`. Cara kerja fungsi `switch()` secara umum mirip seperti fungsi `if()`, yaitu menjalankan perintah yang sesuai dengan kondisi yang ada. Fungsi ini secara umum digunakan untuk menjalankan suatu perintah berdasarkan pilihan yang sudah ditentukan dan dibuat di dalam sebuah function. Sebagai contoh, di bawah ini kita akan menggunakan fungsi `switch()` untuk menghitung nilai mean, median atau trimmed (rataan terpotong). Argumen yang kita gunakan pada contoh ini kita namakan type. Cara kerjanya adalah sebagai berikut. Jika type yang digunakan adalah `"mean"` maka fungsi yang akan dijalankan adalah fungsi `mean()` dari input yang diberikan. Jika `type = "median"` maka fungsi yang akan digunakan adalah `median()` dari input yang diberikan, dan seterusnya.
+
+```{r}
+x <- 1:12 
+type <- 'mean' 
+switch(type, 
+  mean = mean(x), 
+  median = median(x), 
+  trimmed = mean(x, trim = .1)
+)
+```
+
+Misalnya kita buat sebuah fungsi bernama center untuk memudahkan penggunaan program di atas.
+
+```{r}
+center <- function(x, type){ 
+  switch(type, 
+    mean = mean(x), 
+    median = median(x), 
+    trimmed = mean(x, trim = .1)
+  ) 
+}
+
+```
+
+Ketika kita ingin menghitung rata-rata dari vector x kita cukup menuliskannya seperti berikut ini.
+
+```{r}
+center(x, type = 'mean')
+```
+
+Begitu juga ketika kita ingin menghitung median atau rata-rata terpangkas (trimmed), maka kita cukup mengganti `'mean'` dengan pilihan yang sesuai.
+
+```{r}
+center(x, 'median')
+center(x, 'trimmed')
+```
+
+## Looping `for()`
+
+Ketika membicarakan tentang melakukan proses looping dalam sebuah bahasa pemrograman, pastinya yang akan dibahas adalah looping `for()`. Begitu juga di bahasa pemrograman R. Bentuk umum dari looping `for()` adalah sebagai berikut. Looping `for()` umumnya digunakan ketika kita mengetahui berapa kali iterasi yang akan dilakukan.
+
+```{r}
+#| eval: false
+for(indeks in vector){ 
+ekspresi1 
+ekspresi2 
+... 
+}
+
+```
+
+Fungsi `for()` membutuhkan 2 argumen utama, yaitu sebuah objek yang akan menjadi indeks pengulangan dan sebuah vector atau list. Objek indeks nantinya akan bernilai sesuai dengan urutan yang ada pada vector tersebut. Kemudian ekspresi adalah perintah atau program yang akan dijalankan. Perhatikan contoh berikut ini.
+
+```{r}
+for(i in 1:5){ 
+msg <- paste0("looping for ke-", i) 
+message(msg) 
+}
+```
+
+Argumen `i in 1:5` pada looping `for()` di atas berarti looping ini akan menjalankan perintah dengan indeks `i` bernilai 1 sampai dengan 5. Atau dengan kata lain kita memerintahkan R untuk melakukan iterasi sebanyak 5 kali. Kemudian karena indeks i digunakan pada fungsi `paste0()`, maka nilai `i` akan berubah sesuai dengan nilai `i` pada iterasi tersebut.
+
+Namun saat ini mulai banyak pengguna R yang meninggalkan `for()` untuk melakukan iterasi. Alasannya adalah karena `for()` merupakan sebuah perintah untuk melakukan iterasi yang performanya cukup lambat. Oleh karena itu, saat ini banyak yang lebih menyarankan untuk menggunakan fungsi dari family apply (`apply()`, `sapply()`, `tapply()`, dan lain-lain). Atau ada juga yang lebih senang menggunakan fungsi dari package {purrr} seperti `map()`, `map_dfr()` dan lain-lain. Alasannya adalah karena fungsi-fungsi tersebut dibuat dari bahasa pemrograman C++ sehingga memiliki performa yang lebih cepat dibandingkan dengan `for()`. 
+
+Ketika kita membutuhkan proses pengulangan bersarang (_nested looping_) menggunakan `for()` kita dapat melakukannya dengan program seperti berikut ini.
+
+```{r}
+for(i in 1:5){ 
+  for(j in 1:3){
+    msg <- paste0("looping for i=", i, " dan j=", j) 
+    message(msg)  
+  }
+}
+```
+
+Program di atas melakukan pengulangan bersarang untuk indeks `i` bernilai 1 akan menjalankan pengulangan `for()` dengan indeks `j`. Karena indeks `j` bernilai 1 sampai dengan 3 maka untuk setiap nilai indeks `i` akan menjalankan perintah untuk menampilkan pesan (_message_) dengan masing-masing nilai indeks `j`, yaitu `j` = 1, 2 dan 3.
+
+## Looping `while()`
+
+Perbedaan dengan fungsi `for()` yang digunakan ketika kita sudah mengetahui banyaknya iterasi yang akan dijalankan, baik itu secara eksplisit maupun secara pemrograman, `while()` digunakan ketika kita tidak mengetahui banyaknya iterasi yang akan dijalankan namun mengetahui kondisi logical yang menjadi syarat program tersebut tetap berjalan atau berhenti. Bentuk umum dari looping `while()` ini adalah sebagai berikut.
+
+```{r}
+#| eval: false
+# definisikan kondisi awal
+while(kondisi){ 
+  ekspresi 
+  ... 
+  update kondisi
+}
+
+```
+
+Syarat untuk menggunakan `while()` adalah Anda harus mempunyai kondisi awal terlebih dahulu. Argumen `kondisi` adalah sebuah nilai logical (`TRUE` atau `FALSE`) dari `kondisi awal` yang nilainya dibuat sebelum `while()`. Ekspresi atau perintah yang ada di dalam `while()` akan terus dijalankan selama kondisi bernilai `TRUE`. Biasanya nilai kondisi ini akan diperbarui di dalam `while()` agar kondisi `FALSE` nantinya dapat terjadi. Satu hal penting yang harus diingat ketika menggunakan `while()` adalah kita harus bisa memastikan bahwa argumen kondisi suatu saat akan bernilai `FALSE` agar iterasinya berhenti.
+
+Contoh 1
+
+```{r}
+# definisi kondisi awal 
+i <- 0 
+while(i < 5){ 
+  print(i) 
+  i <- i + 1 # perbaruan kondisi
+}
+```
+
+Contoh 2
+
+```{r}
+i <- 0 # kondisi awal
+while(i < 5){ 
+  i <- i + 1 # perbaruan kondisi
+  print(i) 
+}
+```
+
+Penempatan program yang menjadi pembaruan kondisi di dalam `while()` akan berpengaruh terhadap proses atau hasil dari looping ini. Pada kedua contoh di atas penempatan program pembaruan kondisi hanya berbeda urutan, sebelum atau setelah perintah `print(i)`. Namun perbedaan kecil ini dapat sangat berdampak terhadap proses dan hasil dari looping. Pada contoh pertama ketika pembaruan kondisi setelah `print()`, artinya program akan menjalankan perintah `print()` dari nilai kondisi `i`, yaitu 0. Kemudian nilai `i` diperbarui dengan menambahkan nilai 1 dan sekarang `i` bernilai 1. Karena tidak ada lagi program yang dijalankan di dalam `while()` maka prosesnya akan mengulang. Nilai `i` diperiksa Kembali apakah masih bernilai `TRUE` di dalam `while()`. Nilai `i = 2` masih kurang dari 5 dan akan Kembali menjalankan program ekpresi tersebut. Ketika `i = 4`, kondisi masih bernilai `TRUE` karena `i` masih kurang dari 5. Nilai `i = 4` akan dicetak dan ditambah 1. Saat ini nilai `i = 5` dan ketika dilakukan pemeriksaan kondisi sudah tidak terpenuhi karena bernilai `FALSE`. Proses pengulangan sudah berhenti karena kondisinya bernilai `FALSE`. Oleh karena itu nilai yang terakhir dicetak adalah 4. Dapatkah Anda menjelaskan prose pengulangan yang terjadi pada contoh kedua?
+
+## Looping `repeat`
+
+Fungsi terakhir untuk looping yang akan dibahas pada buku ini adalah menggunakan fungsi `repeat()`. Syarat berhenti iterasinya berdasarkan suatu kondisi logical menggunakan `if(kondisi) break`.
+
+```{r}
+#| eval: false
+repeat { 
+  ekspresi 
+  ... 
+  if(kondisi) break 
+}
+```
+
+Perintah berikut ini adalah contoh untuk menjalankan hal yang sama dengan perintah ketika kita menggunakan fungsi `while()`.
+
+```{r}
+i <- 0 
+repeat { 
+  if(i > 4) { 
+    break # repeat selesai 
+  } 
+  i <- i + 1 
+  print(i) 
+}
+```
+
+
+

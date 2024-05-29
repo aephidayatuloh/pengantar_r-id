@@ -1,0 +1,14 @@
+# Kata Pengantar {.unnumbered}
+
+_Assalamu'alaikum warohmatullohi wabarokatuh..._
+
+_Alhamdulillahi robbil'aalamiin..._
+
+Segala puji dan syukur hanya untuk Alloh Subhanahu Wa Ta'ala karena atas rahmat dan ridho-Nya yang memberikan kesempatan kepada saya untuk menulis buku ini. Buku ini ditulis untuk menuangkan ide dan berbagi pengetahuan berdasarkan hasil belajar, pengalaman melakukan pekerjaan dan penelitian di beberapa bidang sebagai konsultan analisis data, maupun karyawan di sebuah perusahaan.  
+
+Tingginya minat terhadap data analyst/data scientist membuat banyak orang mulai mencoba mendalami dan terjun ke bidang ini. Hampir semua perusahaan di era digital dan persaingan bisnis yang semakin ketat ini membutuhkan analisis data sebagai penunjang atau bahkan menjadi inti dari pengambilan keputusan mereka dalam pengembangan bisnis. Akibatnya banyak orang berebut untuk menjadi data analyst/data scientist. Bahkan cukup banyak dari mereka yang tidak memiliki background pendidikan tentang data (Statistika, Matematika, Ilmu Komputer, dan lain-lain) terjun dan berhasil menjadi seorang data analyst/data scientist. 
+
+Namun karena keterbatasan pengetahuan mereka tentang data atau metode/teknik analisis sering kali membuat mereka kebingungan. Salah satunya adalah penggunaan tools atau software yang mampu membantu mereka untuk belajar dan bekerja sebagai data analyst/data scientist. Di buku ini kami mencoba menawarkan R sebagai pilihan untuk membantu mereka yang ingin belajar pengolahan data. Karena keterbatasan akses terhadap materi pembelajaran penggunaan software R dalam Bahasa Indonesia, kami menyususn buku ini agar dapat menjadi salah satu rujukan bagi orang-orang yang ingin belajar R mulai dari dasar. Di luar sana memang banyak materi pembelajaran tentang penggunaan R, namun sering kali mereka tidak membahas dasar dan secara mendalam. Sering kali pembahasannya langsung pada penggunaan yang sesuai dengan contoh kasus dan sudah tingkat lanjut. Akibatnya orang-orang yang sedang belajar ini mengalami kebingungan ketika mereka ingin mencoba sendiri dengan kasus yang lain karena tidak mengerti konsep dasarnya.  
+
+
+

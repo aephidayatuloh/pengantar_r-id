@@ -1,0 +1,293 @@
+# Eksplorasi dan Visualisasi {#sec-explore}
+
+Seperti yang sudah disinggung di awal bahwa R adalah sebuah bahasa pemrograman yang penggunaan utamanya untuk kebutuhan pengolahan data dan analisis statistik. Saat ini lebih terkenal dengan istilah analisis data dan data science. Kegiatan analisis data ini tentunya tidak akan terlepas dari eksplorasi data. Terutama ketika baru pertama kali mendapatkan data tersebut. Kegiatan eksplorasi ini bertujuan untuk mengenal lebih dalam data yang kita gunakan. Metode yang umumnya digunakan ketika melakukan eksplorasi data adalah secara numerik/tabulasi atau secara visual dengan memanfaatkan grafik. Kegiatan eksplorasi dan menyiapkan data untuk kebutuhan analisis data umumnya memerlukan waktu 60%-80% dari seluruh waktu yang dibutuhkan untuk analisis data dari awal hingga akhir.
+
+Kita akan bekerja dari sebuah dataframe karena umumnya kegiatan analisis data bersumber dari data yang berbentuk tabular (baris sebagai observasi dan kolom sebagai variabel). Data iris sudah tersedia di R, namun kita akan mulai dari import data karena hampir semua data akan diimport terlebih dahulu, baik itu dari file data atau database. Data iris mempunyai dua tipe data, yaitu numeric dan character.
+
+## Eksplorasi Tabular
+
+Kita import terlebih dahulu data yang akan digunakan dari file `iris.csv` di dalam folder data. Kita gunakan function `read_csv()` dari package {readr} sebagai latihan menggunakan package.
+
+```{r}
+library(readr)
+iris_csv <- read_csv(file = "data/iris.csv", col_names = TRUE) 
+```
+
+Untuk mengetahui banyaknya baris data pada iris_csv kita dapat gunakan fungsi `nrow()`, sedangkan untuk mengetahui banyaknya kolom kita gunakan fungsi `ncol()`.
+
+```{r}
+nrow(iris_csv)
+ncol(iris_csv)
+```
+
+Jadi ada 150 observasi (baris) dan 5 variabel (kolom) dari data yang sudah diimport. Hal ini perlu kita sesuaikan dengan banyaknya baris dan kolom dari data asli yang ada di file data tersebut. Jika sudah sama maka kita dapat lanjut ke tahapan lain. Jika masih ada yang tidak sesuai maka perlu diketahui dahulu letak kesalahannya dan perbaiki sehingga semuanya sudah sesuai. Setelah itu kita dapat mengetahui nama-nama variabel yang ada pada dataframe tersebut dengan menggunakan fungsi `colnames()`, atau `names()`.
+
+```{r}
+colnames(iris_csv)
+names(iris_csv)
+```
+
+Pada kasus ini kedua fungsi tersebut menghasilkan output yang sama, yaitu nama kolom dari dataframe. Atau kita juga dapat menggunakan fungsi `str()` untuk melihat informasi itu semua ditambah dengan preview beberapa baris pertama dataframe tersebut.
+
+```{r}
+str(iris_csv)
+
+```
+
+Sekarang mari kita eksplorasi masing-masing variabel. Kita mulai dengan variabel pertama, yaitu Sepal.Length. Seperti yang sudah dibahas pada bagian 2.9 bahwa ada beberapa cara agar kita dapat mengakses nilai dari suatu variabel di dataframe. Salah satunya adalah dengan menggunakan tanda dollar `$`. Jika Anda menggunakan RStudio versi terbaru, Anda dapat mengetik iris_csv kemudian diikuti tanda `$` maka akan muncul nama-nama variabel dari dataframe tersebut.
+
+```{r}
+iris_csv$Sepal.Length
+typeof(iris_csv$Sepal.Length)
+
+```
+
+Seperti yang kita lihat, variabel Sepal.Length bertipe `numeric` atau `double`. Pertama, kita akan lakukan eksplorasi untuk mengetahui nilai rata-rata dari variabel ini. Kita dapat gunakan fungsi `mean()` seperti berikut.
+
+```{r}
+mean(iris_csv$Sepal.Length)
+
+```
+
+Kita dapatkan nilai rata-rata dari variabel Sepal.Length adalah _sekitar_ 5.843333. Kenapa “sekitar”? Karena mungkin saja nilai yang ditampilkan hanyalah pembulatan dengan 6 (enam) digit setelah tanda desimal. Selanjutnya kita masukkan nilai-nilai dari variabel `Sepal.Length` ke dalam object bernama `sepal_length` yang berupa vector. Kita juga dapat menghitung nilai tengah atau median (Q2) dengan fungsi `median()`. Untuk mendapatkan nilai ragam (variance) dan simpangan baku (standard deviation)? Kita gunakan fungsi `var()` dan `sd()`.
+
+```{r}
+sepal_length <- iris_csv$Sepal.Length 
+median(sepal_length)
+var(sepal_length)
+sd(sepal_length)
+
+```
+
+Untuk mendapatkan nilai minimum dan maksimum kita gunakan fungsi `min()` dan `max()`. Untuk mendapatkan keduanya sekaligus kita gunakan fungsi `range()`.
+
+```{r}
+min(sepal_length)
+max(sepal_length)
+range(sepal_length)
+
+```
+
+Kita juga dapat gunakan fungsi `quantile()` untuk mendapatkan nilai statistik Q1 (data pada urutan ke 25%) dan Q3 (data pada urutan ke 75%).
+
+```{r}
+quantile(sepal_length, probs = c(0.25, 0.75))
+
+```
+
+Untuk menampilkan statistik lima serangkai (Min, Q1, Q2, Q3, dan Max) bersamaan kita dapat gunakan fungsi `summary()`.
+
+```{r}
+summary(sepal_length)
+
+```
+
+Selain dapat digunakan untuk sebuah vector numeric, fungsi `summary()` juga dapat kita gunakan untuk beberapa variabel numeric sekaligus pada sebuah dataframe.
+
+```{r}
+summary(iris)
+
+```
+
+Seperti kita lihat, nilai yang dihasilkan oleh fungsi `summary()` untuk variabel `Species` berbeda dibandingkan variabel yang lain. Hal ini karena `Species` adalah variabel character, sehingga fungsi `summary()` hanya menampilkan banyaknya observasi untuk setiap kategori. 
+
+```{r}
+summary(sepal_length)
+
+```
+
+Untuk variabel tipe character umumnya eksplorasi yang dilakukan adalah dengan membuat tabulasi atau tabel frekuensi. kita dapat gunakan fungsi `table()` untuk menghitung banyaknya observasi masing-masing kategori pada variable tersebut.
+
+```{r}
+table(iris_csv$Species)
+
+```
+
+Kita bisa lihat bahwa masing-masing kategori pada variabel Species mempunyai jumlah yang sama. Tentu saja ketika kita menghitung proporsi atau persentase jumlah masing-masing kategori terhadap banyaknya observasi seluruh data (baris) maka nilainya akan sama untuk semua kategori. Untuk menghitung nilai proporsi kita gunakan fungsi `prop.table()` dengan inputnya adalah tabulasi hasil dari function `table()`.
+
+```{r}
+frekuensi <- table(iris_csv$Species) 
+prop.table(frekuensi)
+
+```
+
+Selanjutnya kita juga dapat menghitung nilai statistik dari suatu variabel numerik berdasarkan kategori suatu variabel bertipe character. Misalnya kita hitung nilai rata-rata dari variabel `Sepal.Length` berdasarkan kategori dari `Species`. Kita gunakan fungsi `aggregate()`.
+
+```{r}
+aggregate(Sepal.Length ~ Species, data=iris_csv, FUN=mean)
+
+```
+
+Selanjutnya Anda dapat mencoba eksplorasi seperti di atas dengan menggunakan variabel lain.
+
+## Visualisasi Data dengan Grafik Dasar di R  
+
+### Diagram Batang
+
+Diagram batang (bar chart atau barplot) adalah salah satu jenis visualisasi yang digunakan untuk menampilkan informasi berupa frekuensi, persentase atau nilai statistik lain dari beberapa nilai kategorik dalam suatu variabel. Bentuk dari barplot sendiri berupa batang untuk masing-masing kategori dengan ketinggian berdasarkan nilai yang ingin ditampilkan. Barplot sangat cocok digunakan ketika ingin membandingkan nilai masing-masing kategori.
+
+Contoh berikut ini adalah tampilan barplot untuk membandingkan banyaknya amatan untuk masing-masing kategori pada variabel `Species` di data `iris_csv`. Untuk mendapatkan frekuensi dari variabel ini kita gunakan fungsi `table()` dengan input berupa vector kategorik, yaitu variabel `Species`.
+
+```{r}
+frekuensi <- table(iris_csv$Species) 
+barplot(frekuensi)
+
+```
+
+ 
+Selanjutnya ketika kita ingin membandingkan rata-rata nilai dari variable `Sepal.Length` berdasarkan kategori pada variable `Species` kita gunakan perintah yang sama seperti sebelumnya dengan function `aggregate()` dan hasilnya disimpan dalam objek rataan. Kemudian kita buat visualisasi barplot dari objek rataan tersebut. Tentu saja kita juga dapat menggunakan operator pipe seperti yang sudah kita bahas sebelumnya.
+
+```{r}
+rataan <- aggregate(Sepal.Length ~ Species, 
+                    data = iris_csv, FUN = mean) 
+barplot(Sepal.Length ~ Species, data = rataan)
+# dengan pipe 
+rataan <- iris_csv |> 
+  aggregate(Sepal.Length ~ Species, 
+            data = _, FUN = mean) 
+
+rataan |> 
+  barplot(Sepal.Length ~ Species, data = _)
+
+```
+
+ 
+Untuk mengubah warna batangnya Anda dapat menggunakan kode warna seperti `"red"`, `"blue"`, `"green"`, `"yellow"`, `"black"`, `"skyblue"`, `"steelblue"`, `"firebrick"`, `"grey"`, `"grey50"`, dan lain-lain. Anda juga dapat menggunakan kode Hex (misalnya `"#00bfff "` untuk warna `"skyblue"`).
+
+```{r}
+rataan |> 
+  barplot(Sepal.Length ~ Species, data = _, 
+          col = "skyblue")
+
+```
+
+ 
+### Diagram Lingkaran
+
+Diagram lingkaran (_pie chart_) merupakan diagram yang berupa lingkaran dan terbagi-bagi dalam beberapa juring. Banyaknya juring menggambarkan banyaknya kategori dari variable yang divisualisasikan yang kemudian setiap juring dapat ditampilkan dengan warna atau arsiran yang berbeda-beda (Sartono da Hidayatuloh 2021). Bentuknya yang bulat dan terbagi menjadi beberapa bagian membuatnya sangat efektif untuk menyajikan data dalam bentuk proporsi atau persentase. Kategori yang memiliki nilai lebih tinggi ditampilkan dengan juring yang lebih luas. Jumlah persentase dari seluruh kategori harus sama dengan 100%. 
+
+Diagram lingkaran adalah salah satu jenis visualisasi data yang paling umum digunakan dalam dunia statistik, bisnis dan ilmu sosial. Diagram lingkaran memiliki manfaat besar dalam komunikasi data, di antaranya:
+
+1.	Mudah dipahami oleh berbagai kalangan, termasuk yang bukan ahli dalam bidang statistika atau matematika.  
+2.	Mudah digunakan untuk membuat perbandingan persentase antar kategori.   
+
+Cara membuat diagram lingkaran di R sangat mudah. Anda dapt menggunakan function `pie()` dengan input berupa vector, matriks atau objek hasil dari function `table()`. 
+
+```{r}
+jenis_kelamin <- c("Pria" = 70, "Wanita" = 30)
+jenis_kelamin |> 
+  pie()
+
+# Menambahkan label pada pie chart
+jenis_kelamin |> 
+  pie(labels = paste(names(jenis_kelamin), 
+                     jenis_kelamin, sep = "\n"))
+
+```
+
+   
+### Histogram & Density
+
+Histogram adalah sebuah visualisasi terkait sebaran data numerik. Histogram juga dapat digunakan untuk melihat pola kisaran nilai yang banyak muncul dari data numerik tersebut. Untuk membuat histogram menggunakan grafik dasar di R kita dapat gunakan fungsi `hist()` dengan argument datanya berupa vector numeric.
+
+```{r}
+sepal_length <- iris_csv$Sepal.Length
+sepal_length |> 
+  hist()
+
+```
+
+Kita dapat tentukan banyaknya batang pada histogram dengan menambahkan nilai pada argument breaks. Untuk membuat tampilan lebih menarik dan informasi yang ingin disampaikan lebih mudah diterima kita dapat menambahkan keterangan pada histogram judul (`main`), judul axis (`xlab` dan `ylab`). Untuk menambahkan warna pada batang histogram, kita dapat tambahkan pada argumen col. Perhatikan contoh berikut ini.
+
+```{r}
+sepal_length |> 
+  hist(breaks = 15, main = "Distribution of Sepal Length", 
+       xlab = "Sepal Length", col = "skyblue")
+
+```
+
+Selanjutnya, untuk dapat menghasilkan dugaan peluang kepekatan (density) suatu data numeric kita dapat gunakan fungsi `density()`. Argument pertama dari fungsi ini adalah sebuah vector numeric. Keluaran (output) dari fungsi tersebut adalah sebuah object list yang terdiri dari nilai `x`, `y`, `bw`, `n`, `call`, `data.name`, `has.na` dan atribut `class`. Nilai `x` adalah titik data numeric yang digunakan untuk pendugaan kepekatan. Nilai `y` adalah nilai dugaan kepekatan (density), sedangkan `bw` adalah nilai bandwidth yang digunakan. Umumnya nilai dugaan kepekatan ini disajikan dalam bentuk visual grafik berupa kurva kepekatan peluang (_density curve_).
+
+```{r}
+dens <- sepal_length |> 
+  density() 
+dens
+
+plot(dens)
+```
+
+Kita dapat mengatur warna yang ingin kita gunakan agar tampilan kurvanya lebih menarik dengan menggunakan fungsi `polygon()` setelah 
+membuat kurva kepekatan. Perhatikan contoh dibawah ini.
+
+```{r}
+plot(dens, main = "Density of Sepal Length") 
+polygon(dens, col = "skyblue")
+
+plot(dens, main = "Density of Sepal Length") 
+polygon(dens, col = "skyblue")
+
+```
+
+ 
+### Boxplot
+
+Jenis visualisasi berikutnya untuk data numeric adalah diagram kotak-garis atau biasa disebut dengan boxplot. Visualisasi ini dapat memberikan kepada Anda bentuk sebaran dengan nilai minimum, Q1 (data ke-25% setelah diurutkan dari besar ke kecil), Q2 (data ke-50% atau median), Q3 (data ke-75%) dan nilai maksimum serta pencilan (_outlier_) jika ada. Data yang digunakan untuk membuat boxplot adalah data numerik.
+
+```{r}
+boxplot(sepal_length)
+
+```
+
+  
+Anda juga dapat membagi data berdasarkan peubah kategorik. Contoh di bawah ini menunjukkan penggunaan dan hasil dari visualisasi sebaran peubah `Sepal.Length` berdasarkan peubah `Species` pada data `iris_csv`.
+
+```{r}
+boxplot(Sepal.Length ~ Species, data = iris_csv)
+
+```
+
+Jika Anda ingin mengubah tampilan boxplot yang tadinya tegak lurus menjadi mendatar, Anda cukup menambahkan argumen `horizontal = TRUE`.
+
+```{r}
+boxplot(Sepal.Length ~ Species, data = iris_csv, horizontal = TRUE)
+
+```
+
+### Scatter plot
+
+Scatter plot atau plot tebaran merupakan jenis visualisasi untuk dua buah variable numerik berupa titik. Untuk membuat scatter plot Anda dapat gunakan fungsi `plot()` dengan argumen utama `x` dan `y` berupa vector numerik yang mempunyai panjang yang sama.
+
+```{r}
+x <- iris_csv$Sepal.Length 
+y <- iris_csv$Sepal.Width 
+plot(x, y)
+
+```
+
+Anda dapat mengganti jenis titik dengan menggunakan argumen `pch` dengan nilai antara 0 dan 25. Misalnya pada contoh di bawah ini menggunakan `pch = 19` untuk titiknya berwarna hitam penuh.
+
+```{r}
+plot(x, y, pch = 19)
+
+```
+
+Jika Anda ingin memberi warna untuk titik-titik tersebut, Anda dapat gunakan argumen `col`. Untuk nilai dari argumen ini Anda dapat tuliskan langsung nama warnanya dalam bahasa Inggris seperti `"red"`, `"blue"`, `"skyblue"`, dan seterusnya. Atau Anda juga dapat gunakan kode HEX.
+
+```{r}
+plot(x, y, pch = 19, col = "skyblue")
+
+```
+
+ 
+### Line chart
+
+Line chart atau diagram garis umumnya digunakan untuk melihat _trend_ yang terjadi pada suatu data. Variable yang ditempatkan pada sumbu-x (horizontal) biasanya adalah data waktu atau tanggal. Untuk membuat _line chart_ menggunakan base R Anda juga dapat gunakan fungsi `plot()` dengan tambahan argumen `type = "l"`. Artinya tipe plot yang akan dibuat adalah (`l`)ine atau garis.
+
+```{r}
+x <- 1:100
+y <- rnorm(100, mean = 100, 12) 
+plot(x, y, type = "l")
+
+```
+
+

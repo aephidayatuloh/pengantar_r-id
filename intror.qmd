@@ -1,0 +1,225 @@
+# Pengantar R dan RStudio {#sec-intro}
+
+```{r}
+#| results: "asis"
+#| echo: false
+source("_common.R")
+```
+
+R adalah sebuah program komputasi statistika dan grafis (R Core Team 2023). Saat ini R sudah dikenal luas sebagai salah satu powerful software untuk analisis data dan Data Science. Tentu saja selain R masih banyak software lain yang juga sering digunakan untuk analisis data, misalnya Python. R dibuat dengan tujuan awal untuk komputasi statistika dan grafis. 
+
+Awalnya digunakan oleh para ilmuwan dalam riset mereka dan para akademisi. Namun seiring perkembangan teknologi, cakupan kemampuan R sebagai bahasa pemrograman menjadi jauh lebih luas. Anda dapat membuat dan update report rutin menggunakan R Markdown. Anda juga dapat membuat aplikasi web interaktif atau dashboard dengan package shiny. Karena R didesain untuk analisis data dan perkembangan serta kemampuannya mencakup hampir semua lini dalam analisis data, tidak heran saat ini banyak analis data dan ilmuwan data (data scientist) menggunakan R untuk menyelesaikan berbagai masalah mereka. Berikut ini beberapa kemampuan R.
+
+**Gratis dan Open Source**  
+
+Merujuk kepada opensource.com, istilah open source merujuk kepada sesuatu yang bisa dimodifikasi dan dibagikan. Open Source Software (OSS) sendiri berarti software yang source code-nya dapat diperiksa, dimodifikasi, ditambahkan dan dibagikan oleh siapapun.
+
+**Tersedia banyak package**  
+
+Karena R adalah open source software, hampir semua package yang ada pun dapat digunakan secara bebas. Package adalah kumpulan suatu script yang umumnya berupa function (Bab 2.11) atau data yang dapat digunakan untuk kebutuhan tertentu.
+
+**Dibuat oleh statistisi untuk statistisi data analyst/data scientist**  
+
+R adalah sebuah program yang awalnya dibuat untuk kebutuhan statistisi. Oleh karena itu banyak fungsi-fungsi dasar untuk statistika maupun eksplorasi data dan grafis sederhana sudah terdapat di R meskipun tanpa install package tambahan. Namun saat ini R sudah menjadi salah satu software yang digunakan dalam data science karena banyaknya package yang dapat mendukung.
+
+**Mudah dalam melakukan transformasi dan pemrosesan data**  
+
+Karena R adalah program untuk analisis data, maka kemampuan R dalam transformasi data seperti penyiapan data, import dan export data dalam berbagai format, dan lain-lain.
+
+**Mampu menghasilkan grafik yang sangat bagus**  
+
+Salah satu keunggulan yang dimiliki oleh R adalah kemampuannya untuk menghasilkan grafik yang sangat bagus. Salah satu yang diunggulkan adalah package {ggplot2}. Tentu saja masih banyak package untuk visualisasi selain {ggplot2}
+
+**Membuat Reproducible report**  
+
+Ketika Anda mempunyai pekerjaan untuk membuat laporan secara rutin, maka Anda dapat menggunakan R sebagai robot Anda. Dengan package {rmarkdown} atau Quarto Anda dapat membuat laporan rutin dengan sangat mudah.
+
+**Membangun Model Machine Learning**  
+
+Bahasa pemrograman R sudah menjadi salah satu perangkat lunak yang banyak digunakan di dunia data science. Salah satunya untuk membuat model Machine Learning. Tersedia banyak package atau framework yang dapat digunakan untuk membangun model Machine Learning, diantaranya adalah {tidymodels}, {mlr3}, {h2o}, {caret} dan sebagainya.
+Dapat membuat aplikasi interaktif/dashboard berbasis web.
+Package {shiny} (dan semua pengembangannya), {flexdashboard} atau {quarto} dapat Anda gunakan untuk membuat visualisasi interaktif ataupun sebagai sebuah produk dari data science.
+
+**Membuat REST API**  
+
+Setelah Anda membuat fungsi atau model prediktif dan ingin digunakan secara lebih luas, Anda dapat membuatnya sebagai API menggunakan package {plumber}.
+Masih banyak lagi kemampuan R yang dapat dimanfaatkan untuk mendukung dan memudahkan pekerjaan Anda dalam hal analisis data atau data science.
+
+
+## Download dan Install R
+
+Di PC dengan OS Windows dapat melakukan langkah-langkah berikut untuk install R.
+
+1.	Buka halaman <https://cran.r-project.org>  
+2.	Pilih Download R for Windows
+
+![Comprehensive R Archive Network (CRAN)](img/cran.png)
+
+Bagi Anda yang menggunakan OS lain maka Anda dapat mengikuti petunjuk dengan membuka tautan yang sesuai.
+
+
+3.	Klik base atau install R for the first time
+
+![Download R Installer](img/download-r.png) 
+
+4.	Kemudian klik Download R x.x.x for Windows
+ 
+![Download R untuk Windows](img/download.png)
+
+5.	Simpan file installer tersebut dan tunggu hingga proses download selesai  
+6.	Setelah download selesai, jalankan file R x.x.x.exe tersebut  
+7.	Anda hanya perlu klik Next dan Finish  
+
+:::{.callout-note}
+Mungkin Anda hanya perlu memilih untuk install versi 64bit jika Anda menggunakan OS Windows 64bit.
+:::
+
+## Menjalankan R 
+
+Setelah selesai install, Anda bisa membuka R GUI.  
+
+1.	Pada Windows 11 klik atau tekan tombol Start  
+2.	Klik **All apps** dan cari Folder R dan pilih R sesuai versi yang sudah terinstall, atau ketik R 4.4.0  
+ 
+ 
+Gambar 1.4: Menu untuk Menjalankan R di Windows 11
+
+Di bawah ini adalah tampilan ketika Anda membuka program R GUI.
+ 
+Gambar 1.5: R GUI
+
+Anda sudah dapat menggunakan R melalui R GUI ini. Namun Anda juga dapat menggunakan Integrated Development Environment (IDE) untuk lebih nyaman, mudah dan efisien ketika bekerja dengan R. IDE untuk R yang saat ini sangat sering digunakan adalah RStudio. Berikut ini adalah cara untuk install RStudio di PC Windows.
+
+## Mengenal RStudio  
+
+Sebelum membahas lebih lanjut tentang R, sebaiknya Anda download RStudio dan install terlebih dahulu. RStudio adalah Integrated Development Environment (IDE) untuk R yang banyak digunakan hingga saat ini. Dapat dikatakan bahwa hampir semua pengguna R yang sudah mengetahui RStudio akan lebih memilih menggunakan R melalui RStudio dibandingkan dengan menggunakan R GUI.
+
+Download RStudio versi desktop sesuai dengan kebutuhan Anda. Sangat disarankan untuk menggunakan RStudio versi terbaru, termasuk juga dengan R. R dan RStudio adalah dua program yang berbeda. Anda tidak harus install RStudio untuk dapat menggunakan program R (melalui R GUI). Tapi Anda diwajibkan untuk install R terlebih dahulu sebelum install dan menggunakan RStudio karena RStudio membutuhkan program R yang sudah terinstall di PC atau server. Gambar 1.6 mengilustrasikan perumpamaan R ini seperti kerangka mobil dan mesinnya, sedangkan RStudio seperti kerangka luar mobil dan interiornya. Anda tidak akan dapat menggunakan mobil tersebut jika Anda hanya mempunyai kerangka luar dan dashboardnya (RStudio) saja.
+ 
+Gambar 1.6: R dan RStudio (sumber: https://community.rstudio.com/t/differentiating-r-from-rstudio/8009)
+
+Install RStudio dengan cara berikut.
+■	Download RStudio Desktop (https://posit.co/download/rstudio-desktop/)  
+■	Jalankan installer yang sudah didownload  
+■	Klik Next  
+ 
+Gambar 1.7: Langkah 1
+
+■	Klik Next 
+ 
+Gambar 1.8: Langkah 2
+
+■	Klik Install 
+ 
+Gambar 1.9: Langkah 3
+
+■	Klik Next 
+ 
+Gambar 1.10: Langkah 4
+
+■	Klik Finish 
+
+ 
+Gambar 1.11: Langkah 5
+
+Selanjutnya di buku ini akan lebih banyak menggunakan RStudio dibandingkan dengan R GUI karena lebih mudah dan interaktif.
+
+## Penggunaan RStudio  
+
+Untuk menggunakan RStudio di Windows 11, hampir sama ketika Anda akan membuka program R (Bab 1.1.2)
+ 
+Gambar 1.12: Membuka RStudio di Windows 11  
+
+Selain itu, jika Anda pengguna sistem operasi Windows, Anda juga perlu install software bernama RTools. Download file installernya dari https://cran.r-project.org/bin/windows/Rtools/. Setelah selesai download, install aplikasi tersebut hingga selesai.
+ 
+Gambar 1.13: Install RTools
+
+## Membuat Project  
+
+Hal yang sebaiknya menjadi kebiasaan Anda ketika menggunakan RStudio adalah membuat sebuah Project untuk setiap pekerjaan yang berbeda. Jika pekerjaan Anda tidak terdapat data yang confidential, Anda juga dapat menggunakan GitHub repository sebagai backup atau berbagi yang Anda kerjakan. Anda dapat membuat sebuah project baru di RStudio dengan cara:
+ 
+Gambar 1.14: Pilihan Membuat Project di RStudio  
+
+■	Pilih New Project… dari 3 menu yang tersedia, a) dari menu File, b) dari toolbar, atau c) dari menu di pojok kanan atas seperti terlihat pada Gambar 1.15.
+ 
+Gambar 1.15: Pilihan New Project
+
+■	Gambar 1.15 menampilkan pilihan jenis project yang akan dibuat.  
+■	New Directory: jika Anda belum mempunyai folder yang Anda jadikan sebagai working directory untuk project tersebut.  
+■	Existing Directory: Jika folder Anda sudah ada sebelumnya.  
+■	Version Control: Jika Anda akan membuat project berdasarkan repository yang sudah ada, misalnya di Git/GitHub atau SVN. Karena kita akan membuat project baru dan belum ada folder yang sudah kita siapkan, maka kita akan pilih New Directory.  
+
+ 
+Gambar 1.16: Tipe New Project
+
+■	Pilih Project Type sesuai dengan project yang akan Anda buat seperti yang terlihat di Gambar 1.16. Misalnya kita buat sebuah project kosong, pilih New Project.
+ 
+Gambar 1.17: Nama Project
+
+■	Tuliskan nama project yang juga akan menjadi nama folder baru sebagai subfolder di dalam folder “Create project as subdirectory of:” seperti terlihat pada Gambar 1.17  
+■	Klik Create Project
+
+Untuk jenis project lainnya Anda dapat mencoba dan mengeksplorasi sendiri.
+
+## Membuat File Script Baru  
+
+Seperti halnya pada R GUI, Anda juga dapat menuliskan langsung perintah atau script pada jendela console di RStudio. Namun di buku ini Anda akan menuliskan semua script di bagian script editor. Hal ini sebaiknya menjadi kebiasaan Anda ketika menggunakan RStudio. Untuk membuat script editor baru di RStudio, Anda dapat klik menu File >> New File >> R Script. Cara yang kedua adalah dengan toolbar New File. Anda dapat lihat pada Gambar 1.18. Anda juga dapat menggunakan shortcut RStudio dengan menekan tombol Ctrl + Shift + N jika Anda menggunakan OS Windows.
+ 
+Gambar 1.18: Membuat Script Baru
+
+Akan muncul file script kosong seperti tampilan Gambar 1.19.
+ 
+Gambar 1.19: Tampilan Script Baru
+
+## Menjalankan Script Pada Script Editor
+
+Setelah berhasil menyiapkan file script editor baru yang masih kosong Anda dapat menuliskan semua yang akan Anda lakukan dengan R. Mencoba “Hello world!” di R? Baiklah.
+      
+Gambar 1.20: Menuliskan “Hello World!” Menggunakan Beberapa Bahasa Pemrograman
+
+Di R Anda cukup menuliskan "Hello World!" di script editor, kemudian Run atau tekan tombol Ctrl + Enter ketika kursor berada pada baris script tersebut (Gambar 1.21). Tentu saja Anda juga dapat melakukannya seperti yang ada di Python dengan fungsi print().
+ 
+Gambar 1.21: Menuliskan Hello World di R
+
+```{r}
+#| 
+print("Hello World!")
+```
+
+Selanjutnya untuk menyimpan script tersebut menjadi sebuah file, Anda dapat lakukan dengan a) klik lambang simpan, b) pilih menu File >> Save atau Save As... atau c) menggunakan shortcut dengan menekan tombol Ctrl + S.
+ 
+Gambar 1.22: Menyimpan Script R
+ 
+Gambar 1.23: Memberi Nama Script R
+
+Kemudian tentukan lokasi folder tempat menyimpan file script tersebut. Selanjutnya berikan nama file pada kotak File name: seperti pada Gambar 1.23. Terakhir klik Save.
+
+## Menutup RStudio
+
+Setelah selesai menggunakan RStudio Anda dapat menutupnya seperti menutup software lainnya. Namun yang perlu diperhatikan adalah ketika muncul konfirmasi seperti Gambar 1.24. Sangat disarankan untuk tidak menyimpan workspace ketika menutup RStudio. Karena ketika Anda membuka kembali RStudio maka akan memuat (loading) kembali semua yang disimpan dari pekerjaan sebelumnya. Hal ini akan sangat berpengaruh ketika ukuran image dari pekerjaan yang disimpan tersebut relatif besar.
+ 
+Gambar 1.24: Konfirmasi Menutup RStudio
+
+## Penggunaan RStudio/Posit Cloud
+
+Bagi Anda yang memiliki kendala untuk menggunakan atau tidak ingin menginstall RStudio di komputer/laptop masing-masing dapat menggunakan Posit Cloud (sebelumnya RStudio Cloud). Sesuai namanya karena Posit Cloud ini dapat digunakan melalui web browser. Anda tidak perlu install R dan RStudio di komputer/laptop Anda. Namun Anda hanya perlu membuat akun di Posit Cloud. Ada versi gratis dan berbayar yang dapat Anda pilih. 
+  
+
+Gambar 1.25: Spesifikasi dan harga Posit Cloud pada 5 Mei 2024
+ 
+Untuk membuat akun di posit cloud Anda dapat menuju ke halaman https://posit.cloud dan pilih menu Free. Tentu saja Anda dapat mebuat akun untuk layanan berbayar sesuai dengan kebutuhan Anda. Selanjutnya klik Sign  Up.
+ 
+
+ 
+Buat akun menggunakan email aktif dan isi formular pembuatan akun seperti gambar di atas atau gunakan akun Google (Gmail) Anda. Jika Anda sudah pernah mendaftar RStudio/Posit Cloud sebelumnya Anda dapat login dengan akun tersebut. Di bawah ini tampilan ruang kerja (Workspace) dari Posit Cloud. Anda dapat menggunakan Workspace yang sudah ada atau membuat Workspace baru. 
+ 
+
+ 
+Anda dapat membuat project baru
+ 
+Untuk membuat project RStudio baru klik … . Setelah project berhasil dibuat, sangat disarankan untuk mengganti nama project Anda. Klik pada Untitled Project dan ganti sesuai dengan nama project yang Anda inginkan. 
+ 
+ 
+Anda dapat memilih versi R yang ingin Anda gunakan. Selanjutnya Anda dapat menggunakan Posit Cloud layaknya RStudio di komputer/laptop Anda. Jika Anda mempunyai file dokumen atau data yang ingin Anda gunakan di project Posit Cloud tersebut, Anda dapat mengunggah (upload) file tersebut melalui tab Files >> Upload. Pilih Target directory di project Anda dan pilih file yang ingin Anda unggah dan terakhir klik OK. Seperti yang tertulis di bagian TIP, jika Anda ingin mengunggah  beberapa file bersamaan, Anda dapat membuat file *.zip yang berisi file-file yang ingin Anda unggah dan secara otomatis Posit Cloud akan mengekstrak file zip tersebut pada lokasi Target directory yang sudah Anda pilih.
+ 
+## Penggunaan Google Colab

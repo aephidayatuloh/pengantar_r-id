@@ -1,0 +1,1032 @@
+# Dasar-dasar Program R {#sec-basicr}
+
+Pada bab ini akan membahas hal-hal dasar tentang R yang harus diketahui dan dikuasai. Hal yang paling sederhana yang dapat dilakukan R adalah sebagai kalkulator. Coba Anda ketikan perintah di bawah ini pada console RStudio dan tekan tombol Enter setelah selesai.
+
+```{r}
+#| eval: false
+> 2 + 4
+## [1] 6
+```
+
+Akan muncul hasil [1] 6. Hasil [1] menunjukkan bahwa yang ditampilkan adalah dari elemen pertama. Hal ini akan dibahas di bagian 2.5. Tanda > adalah prompt yang menunjukkan bahwa R sedang dalam posisi siap menerima perintah baru. Jika perintah belum lengkap maka akan berganti menjadi tanda +. Artinya ada perintah atau bagian script yang belum selesai.
+
+```{r}
+#| eval: false
+> 2 + 
++
+```
+
+Perhatikan setelah Anda tekan tombol Enter maka kursor di R yang sebelumnya > berganti + yang menandakan bahwa perintah belum lengkap. Maka jika Anda kembali menuliskan bilangan lain, misalkan 4 dan tekan tombol Enter maka prompt di R akan kembali menjadi > setelah menuliskan hasilnya karena perintah sudah lengkap dan selesai.
+
+```{r}
+#| eval: false
+> 2 + 
++ 4
+## [1] 6
+```
+
+R adalah bahasa pemrograman yang case-sensitive. Artinya perbedaan huruf kapital dan huruf kecil sangat berpengaruh. Karena itu, penulisan nama objek atau nilai berupa karakter sangat tergantung dari kapitalisasinya. Perhatikan perbedaan dari kedua contoh berikut ini.
+
+```{r}
+a <- 3 
+a 
+```
+
+
+```{r}
+#| eval: false
+A 
+## Error: object 'A' not found
+```
+
+Misalnya Anda membuat sebuah objek bernama a dengan nilai sebuah konstanta. Ketika Anda ingin mengambil nilai dari objek tersebut maka Anda hanya bisa memanggil dengan nama yang sama persis. Anda tidak bisa memanggil objek tersebut dengan nama lain meskipun ketika Anda mengucapkan dengan suara pengucapan yang sama. Anda tidak bisa memanggil objek a tersebut dengan A. Ketika objek yang Anda panggil belum ada di session atau workingspace R saat ini maka akan muncul error seperti contoh di atas.
+
+## Assignment
+
+Bahasa pemrograman R mempunyai sedikit perbedaan dengan bahasa pemrograman pada umumnya. Salah satunya adalah pada operator assignment. Hampir semua bahasa pemrograman lain menggunakan tanda = sebagai operator assignment. Di R, yang utama dan paling banyak digunakan oleh pengguna R adalah operator panah kiri (`<-`). Perintah `obj <- expr` berarti "masukkan nilai hasil dari operasi di sisi kanan (expr) ke dalam objek di sisi kiri (obj)". Pada contoh berikut, saya ingin memasukkan nilai numerik 5 ke objek yang disebut `x`.
+
+```{r}
+x <- 5 
+x
+```
+
+Apakah tidak bisa menggunakan operator `=` sebagai operator assignment? Tentu saja Anda juga bisa menggunakannya.
+
+```{r}
+x = 5 
+```
+
+Hal ini sangat membantu jika Anda seorang programmer yang menggunakan bahasa pemrograman lain yang menggunakan operator `=` sebagai operator assignment. Jadi Anda tidak perlu bingung dengan "Kapan saya harus menggunakan `<-` atau `=` ?". Tapi saya mendorong Anda untuk terbiasa menggunakan `<-` saat membuat program menggunakan R. Jika Anda menggunakan RStudio, Anda dapat menuliskan operator `<-` dengan menekan tombol `ALT + -`.
+
+Jika Anda ingin mengetahui nilai suatu objek cukup panggil objek tersebut atau gunakan fungsi print().
+
+```{r}
+x
+
+# atau 
+
+print(x)
+```
+
+## Operator Assignment Lainnya
+
+Ada beberapa operator assignment lainnya yang dapat Anda gunakan di R. Tabel 2.1 adalah daftar operator assignment. Sekarang, mari kita lihat operator `->`.
+
+```{r}
+# Contoh 1 
+x <- 5 
+5 -> x 
+x
+
+```
+
+```{r}
+# Contoh 2 
+y <- 2 + 4 
+2 + 4 -> y 
+y
+
+```
+
+
+| Operator | Cakupan | Penjelasan |
+|:--------:|:-------:|:-----------|
+| `<-` | lokal/global | nilai dari sebelah kanan dimasukkan ke dalam objek di sebelah kiri. |
+| `->` | lokal/global | nilai dari sebelah kiri dimasukkan ke dalam objek di sebelah kanan. |
+| `<<-` | global | nilai dari sebelah kanan dimasukkan ke dalam objek global di sebelah kiri. |
+| `->>` | global | nilai dari sebelah kiri dimasukkan ke dalam objek global di sebelah kanan. |
+
+: Tabel 2.1 Operator Assignment
+
+Seperti yang Anda lihat, operator `->` memiliki sisi yang berlawanan dengan `<-`. Nilai atau ekspresi yang mengembalikan nilai ada di sisi kiri, sedangkan objek di sisi kanan. Untuk dua operator assignment yang lain kita membahasnya di pembahasan function (Bab 2.11) dalam R. Karena mereka biasanya hanya digunakan dalam sebuah fungsi.
+
+Jika Anda memasukan nilai baru ke dalam sebuah objek yang sama maka nilai yang sebelumnya akan dihapus dan digantikan dengan nilai yang baru.
+
+```{r}
+# Nilai x sebelumnya 
+x
+```
+
+```{r}
+# Nilai x yang baru 
+x <- 8 + 2 
+x
+```
+
+```{r}
+# Nilai x yang baru 
+x <- x + 5 
+x
+```
+
+
+Ketika menggunakan R, setiap yang ada di R disebut objek. Jenis-jenis objek data yang ada di R adalah vector, factor, matriks, array, dataframe, list dan objek berupa function.
+
+## Penamaan Objek
+
+Aturan penamaan objek di R, seperti vector (2.5), matriks (2.7), dataframe (2.9) dan lain-lain, hampir sama dengan aturan penamaan pada bahasa pemrograman lain. Namun ada beberapa aturan khusus yang terdapat di R. Berikut aturan penamaan objek di R.
+
+■	Menggunakan kombinasi alfabet (a-z, A-Z), angka (0-9), titik atau underscore, bahkan spasi (dengan syarat tertentu).  
+■	Diawali alfabet atau titik. Tidak boleh diawali dengan angka atau underscore.  
+■	Tidak mengandung spasi, tab atau karakter khusus seperti `!`, `@`, `#` dan lainnya.  
+■	Sebaiknya tidak menggunakan beberapa penamaan atau nilai yang sudah digunakan oleh R (function dan keyword lainnya). Misalnya `c`, `q`, `TRUE`, `FALSE`, `df`, `dt`, `rnorm`, `runif`, `rf`, `exp`, dan lain-lain. Untuk mengetahui nama-nama yang sudah digunakan oleh R Anda dapat mengetikkan perintah `?reserved` di console RStudio Anda.
+
+Nama objek menggunakan titik? Ya! Di R Anda dapat menamai objek menggunakan titik sebagai pemisah kata atau pengganti spasi ketika ingin membuat nama objek yang terdiri lebih dari satu kata. Tentu saja Anda juga dapat menggunakan underscore sebagai alternatifnya. Sepertinya sekarang pengguna lebih sering menggunakan underscore dibandingkan dengan titik untuk hal ini. 
+
+Salah satu keunikan bahasa pemrograman R adalah Anda juga dapat membuat obejk dengan nama yang mengandung spasi. Ya, Anda tidak salah baca. Di R Anda dapat membuat nama objek atau variable menggunakan spasi. Tentu ada syaratnya. Nama objek dapat mengandung spasi dengan syarat penulisannya diapit dalam tanda kutip terbalik atau backtick (\`variabel\`). Misalnya jika Anda ingin membuat objek dengan nama "data gabungan" maka Anda dapat menulisnya dengan `data.gabungan`, `data_gabungan` atau \`data gabungan\`. 
+
+## Working Directory
+
+Untuk mengetahui di folder mana Anda bekerja dengan R saat ini, Anda dapat gunakan fungsi `getwd()`.
+
+```{r}
+#| eval: false
+getwd()
+## [1] "D:/aephidayatuloh/R/buku/sds-r_id"
+```
+
+Untuk mengatur lokasi folder Anda bekerja, Anda dapat gunakan fungsi `setwd()`. Misalnya Anda ingin mengganti working directory menjadi "D:/aephidayatuloh/folder".
+
+```{r}
+#| eval: false
+setwd("D:/aephidayatuloh/folder")
+```
+
+
+Dengan begitu Anda dapat mengakses file atau data di dalam directory tersebut lebih mudah dan praktis. Anda jg dapat melakukannya dengan cara membuat sebuah project di RStudio seperti yang sudah dibahas di bagian 1.3.1.
+
+## Vector
+
+Vector adalah objek data paling sederhana yang ada di dalam R. Secara umum jenis vector terbagi 2, yaitu numeric dan character. Ada banyak sekali cara untuk membuat sebuah vector di R. Di bagian ini akan dibahas beberapa cara yang banyak dan mungkin akan sering Anda gunakan.
+
+### Fungsi `c()`
+
+Fungsi yang paling sering digunakan untuk membuat sebuah vector adalah dengan menggunakan fungsi `c()`.
+
+```{r}
+x <- c(2, 1, 5, 3, 1) 
+x
+```
+
+Pada script di atas, dibuat sebuah objek x berupa vector numeric. Setiap elemen dipisah menggunakan tanda koma (`,`). Fungsi ini dapat digunakan untuk membuat vector numeric atau character. Indeks di R dimulai dari 1, tidak seperti kebanyakan bahasa pemrograman lain yang indeksnya dimulai dari 0. Hal ini cukup memudahkan pengguna karena umumnya manusia menghitung mulai dari 1, bukan dari 0.
+
+Ketika Anda ingin mengambil elemen ke 2 dari vector x, maka Anda dapat menjalankan perintah berikut.
+
+```{r}
+x[2]
+```
+
+### Tanda titik dua/colon (:)
+
+Untuk membuat sebuah vector numeric berurutan secara meningkat atau menurun. Lihat contoh berikut ini.
+
+```{r}
+x <- 1:10 # 1 sampai 10 
+x
+```
+
+Fungsi dari operator : pada contoh di atas adalah membuat vector numeric dengan nilai dari 1 s/d 10. Tentu saja operator increment ini hanya dapat digunakan untuk numeric dan meningkat sebesar 1 nilai. Operator ini dapat juga digunakan untuk membuat vector dengan nilai menurun.
+
+
+```{r}
+# membuat vector numeric dengan nilai 
+# dari 10 s/d -10 secara menurun 1 
+
+x <- 10:-10 # 10 sampai -10 
+x
+
+```
+
+
+### Fungsi `seq()`
+
+Fungsi ini dapat digunakan untuk membuat vector berurutan dan dengan _increment_ tertentu.
+
+```{r}
+# Vector 1 sampai 10 dengan increment 1 (default by = 1) 
+x <- seq(from = 1, to = 10) 
+x
+
+```
+
+Secara default _increment_ dari fungsi `seq()` adalah `by = 1`. Jika Anda ingin nilai _increment_ lain maka hanya perlu mengganti nilai pada argumen `by`. Fungsi ini juga hanya dapat digunakan untuk membuat vector numeric.
+
+```{r}
+# Vector 1 sampai 20 dengan increment 2 
+x <- seq(from = 1, to = 20, by = 2)
+x
+
+```
+
+```{r}
+# Vector 1 sampai 10, sebanyak 7 elemen, increment mengikuti
+x <- seq(from = 1, to = 10, length.out = 7) 
+x
+
+```
+
+```{r}
+# Vector 1 sampai 10, sebanyak elemen dari vector lain
+x <- seq(from = 1, to = 10, along.with = 1:4) 
+x
+
+```
+
+### Mengambil satu kolom dari dataframe atau matriks
+
+Mengambil sebuah kolom dari sebuah dataframe akan dibahas lebih jauh di bagian dataframe (2.9). Dengan menggunakan tanda dolar $ dan diikuti dengan nama kolom yang akan diambil dari dataframe tersebut.
+
+```{r}
+mtcars$mpg
+
+```
+
+Dari dataframe `mtcars` diambil semua nilai yang ada di kolom `mpg`. Cara ini akan dicontohkan lebih banyak pada bagian-bagian selanjutnya di [bab @sec-dataframe].
+
+### Fungsi `unlist()`
+
+Fungsi ini berguna untuk menjadikan sebuah objek list menjadi sebuah vector. Pembahasan lebih lanjut akan dibahas di bagian 2.10.
+
+```{r}
+x <- list(mtcars$mpg, mtcars$disp) 
+x
+
+```
+
+Vector x di atas adalah sebuah list yang dibuat dari gabungan vector variable `mpg` dan `disp` pada dataframe `mtcars`. Selanjutnya kita ubah list tersebut menjadi sebuah vector dengan function `unlist()`.
+
+```{r}
+x <- unlist(x) 
+x
+
+```
+
+Fungsi `unlist()` menggabungkan semua list menjadi sebuah vector. Karena ukuran masing-masing elemen list tersebut sebanyak 32 elemen, maka ketika digabungkan menjadi sebuah vector akan membuat vector dengan ukuran 64 elemen. 
+
+:::{.callout-important}
+Catatan penting untuk vector: walaupun ditampilkan ke samping, dimensi vector di R sebenarnya ke bawah. Bayangkan untuk sebuah vector seperti satu kolom di Ms Excel. Semua contoh di atas untuk membuat vector adalah vector numeric. Vector numeric adalah vector yang semua elemennya bernilai dan bertipe numeric.
+:::
+
+### Fungsi `rep()`
+
+Dengan fungsi `rep()` Anda dapat membuat sebuah vector dengan mengulang-ulang nilai yang diinginkan sebanyak yang dibutuhkan.
+
+```{r}
+# Membuat sebuah vector numeric yang semua 
+# elemennya bernilai 3 sebanyak 10 elemen 
+x <- rep(3, 10) 
+x
+
+```
+
+### Vector character
+
+Vector character adalah vector yang semua elemennya bertipe character.
+```{r}
+y <- c("a", "A", "d", "c") 
+y
+
+```
+
+Jika ketika membuat sebuah vector bernilai numeric namun ada satu saja elemennya bertipe character maka semua elemennya akan bertipe character.
+
+```{r}
+c(1, 2, 3, 5, "a")
+
+```
+
+Di R ada vector khusus yang sudah tersedia bertipe character, yaitu `letters`, `LETTERS`, `month.name` dan `month.abb`.
+
+```{r}
+letters
+LETTERS
+month.name
+month.abb
+
+```
+
+Dua buah vector atau lebih dapat digabungkan dengan fungsi `c()`. Namun, jika salah satu vector bertipe character, maka vector hasil gabungan akan menjadi vector character. Contoh di bawah ini menggabungkan vector `x` dan `y`. Vector `x` adalah vector numeric, sedangkan `y` adalah vector character. Karena ada satu atau lebih elemen yang berupa character, maka ketika `x` dan `y` digabungkan akan menjadi vector character.
+
+```{r}
+c(x, y) 
+
+```
+
+Cara lain yang dapat digunakan untuk membuat vector character adalah menggunakan fungsi `paste()`, `paste0()` atau `sprintf()`. Jalankan dan perhatikan perbedaan dari contoh perintah di bawah ini.
+
+```{r}
+paste("A", 1:5)
+paste0("A", 1:5)
+sprintf("A%s", 1:5)
+
+```
+
+Setiap elemen vector juga dapat diberi nama dengan cara berikut. 
+
+```{r}
+vct.nama <-  c("a" = 1, "b" = 2, "c" = 3)
+vct.nama
+
+```
+
+Selain mengakses elemen dari vector di atas dengan menggunakan indeks, pada vector yang elemennya memiliki nama dapat mengakses elemennya menggunakan nama elemen yang bersesuaian. 
+
+```{r}
+vct.nama["a"]
+vct.nama[1]
+
+```
+
+Bagaimana jika ingin mengambil elemen dengan nama "a" dan "c" sekaligus? 
+
+```{r}
+vct.nama[c("a", "c")]
+
+```
+
+## Factor
+
+Factor merupakan bentuk khusus dari vector. Biasanya factor lebih sering digunakan untuk menyimpan data kategorik, nominal atau ordinal. Misalnya vector character yang berisi "L" dan "P". Pada vector character, nilainya adalah "L" dan "P" seperti terlihat apa adanya. Namun pada factor, tampilan dari isi datanya "L" dan "P" tetapi isi dari factor adalah pengkodean numerik. Misal untuk "L" nilai sebenarnya adalah 1, sedangkan "P" bernilai 2.
+
+```{r}
+jk <- c("L", "P", "P", "L", "P") 
+jk
+
+jk <- factor(jk)
+jk
+
+print.default(jk)
+unclass(jk)
+```
+
+Contoh lain adalah ketika membuat sebuah factor level pendidikan terakhir dari 8 observasi.
+
+```{r}
+fc <- factor(c("SD", "SMA", "SMP", "SMP", "SD", "SMA", "SD", "SMP")) 
+fc
+
+```
+
+Nilai sebenarnya dari factor tersebut adalah
+
+```{r}
+print.default(fc)
+unclass(fc)
+
+```
+
+Factor mempunyai level, secara default levelnya adalah berdasarkan urutan alfabet. Pada factor di atas jika diurutkan nilai unik dari factor tersebut adalah SD, SMA, dan SMP seperti yang terlihat pada bagian Levels. Jadi level pendidikan SD bbernilai 1, SMA bernilai 2 dan SMP bernilai 3. Untuk mengubah level dari sebuah factor, gunakan argumen `levels =`. Nilai dari argument ini adalah sebuah vector yang isinya sesuai dengan nilai yang ada pada factor yang akan dibuat. 
+
+```{r}
+factor(fc, levels = c("SD", "SMP", "SMA"))
+
+```
+
+Jika sebuah factor adalah kategorik ordinal maka elemen pertama dari vector `levels =` adalah yang kategorinya paling rendah, dan seterusnya hingga levels yang paling tinggi. Tambahkan argument `ordered = TRUE` untuk menjadikan level tersebut memiliki tingkatan ordinal.
+
+```{r}
+factor(fc, levels = c("SD", "SMP", "SMA"), ordered = TRUE)
+
+```
+
+## Matriks
+
+Matriks adalah objek di R yang memiliki dua dimensi, baris (row) yang umumnya dinotasikan dengan `n` dan kolom (column) yang dinotasikan dengan `m`, dan tipe nilainya sama. Jika ketika membuat sebuah matriks memiliki minimal satu elemen bertipe character maka seluruh matriks tersebut akan bertipe character. Membuat matriks di R menggunakan vector yang dikonversi dimensinya. Karena seperti yang sudah diketahui bahwa sebuah vector di R tidak mempunyai dimensi, tetapi dapat dibayangkan seperti matriks berukuran `n` baris dan 1 (satu) kolom.
+
+Misalnya kita memiliki sebuah vector numerik x dengan banyaknya elemen sebanyak 16 seperti berikut ini.
+
+```{r}
+x <- c(1, 2, 5, 4, 2, 2, 3, 3, 5, 3, 1, 0, 4, 3, 0, 6) 
+x
+
+length(x)
+```
+
+Karena vector `x` memiliki `r length(x)` elemen, maka dimensi matriks yang dapat dibuat adalah 2 angka yang hasil perkaliannya menghasilkan nilai  `r length(x)`. Salah satunya adalah 4 x 4 = 16. Untuk membuat matriks di R, kita dapat gunakan fungsi `matrix()` dengan argumen pertama adalah vector. Argumen untuk menentukan ukuran matriks kita dapat gunakan `ncol` atau `nrow`. Bisa kita gunakan keduanya atau hanya salah satu saja. Misalnya kita gunakan `nrow = 4` agar matriks yang dihasilkan adalah matriks persegi berukuran 4x4 karena 4 x 4 = 16. Artinya sama saja dengan kita menggunakan `ncol = 4` karena dengan `nrow = 4` secara otomatis `ncol = 4` atau sebaliknya.
+
+```{r}
+mtx <- matrix(data = x, nrow = 4) 
+mtx
+
+```
+
+Sedangkan jika kita pilih `nrow = 8` maka matriks akan memiliki ukuran 8x2.
+
+```{r}
+mtx <- matrix(data = x, nrow = 8) 
+mtx
+
+```
+
+Bisakah kita memilih ukuran lain? Secara teori tentu saja tidak bisa karena perkalian dua bilangan bulat yang menghasilkan nilai 16 hanya 2x8, 8x2, dan 4x4. Namun di R kita bisa memilih ukuran yang tidak memenuhi aturan tersebut. Tentu saja Anda perlu berhati-hati karena bisa jadi hasilnya tidak sesuai yang diharapkan. Misalnya kita pilih ukuran 8x3.
+
+```{r}
+matrix(data = x, nrow = 8, ncol = 3)
+
+```
+
+Kita dapat melihat bahwa R bisa membuat matriks tersebut. Namun dengan memberikan `warning` bahwa panjang vector 16 elemen bukan hasil dari perkalian 8 dan 3. Banyaknya baris 8 merupakan faktor dari 16, tapi banyaknya kolom 3 bukan faktor dari 16. Karena 16 dibagi 3 bukan merupakan bilangan bulat. Lantas bagaimana bisa terbentuk matriks yang didefinisikan tersebut? Karena 8x3 = 24, sedangkan banyaknya elemen pada vector `x` hanya 16, artinya perlu 8 elemen lagi untuk mengisi matriks tersebut. Jika diperhatikan baik-baik, kolom ketiga adalah pengulangan dari kolom pertama karena semua nilai dari vector `x` sudah dimasukan pada kolom pertama dan kedua. Untuk mengisi kolom ketiga, R mengambil kembali nilai-nilai dari elemen pertama vector `x` hingga memenuhi ukuran matriks yang diinginkan. Bagaimana dengan matriks ukuran 7x3?
+
+```{r}
+matrix(data = x, nrow = 7, ncol = 3)
+
+```
+
+_Warning_ yang serupa kembali muncul namun dengan nilai yang berbeda. Karena 7 bukanlah faktor perkalian dari 16. Mari perhatikan matriks yang dihasilkan di atas yang berukuran 7x3. Karena 7x3 = 21, artinya R kekurangan 5 nilai lagi agar dapat terbentuk matriks ukuran 7x3. Oleh karena itu, R mengambil 5 elemen pertama untuk mengisi kekurangan tersebut. Semua elemen dari vector `x` dimasukkan pada kolom pertama dan kedua serta kolom ketiga pada baris pertama dan kedua. Selebihnya pada kolom ketiga baris ketiga, keempat, kelima, keenam, dan ketujuh adalah 5 elemen pertama dari vector `x`. Oleh karena itu perlu diperhatikan baik-baik kesesuaian ukuran matriks dan banyaknya elemen yang digunakan.
+
+Selain membentuk matriks dari vector yang sudah ada seperti yang dibahas di atas, Anda juga dapat membuat sebuah matriks dari satu atau beberapa variabel pada sebuah dataframe (@sec-dataframe). Misalnya variabel numerik `mpg` dari dataframe `mtcars`.
+
+```{r}
+x <- mtcars$mpg # sebuah vector 
+x
+length(x)
+```
+
+Karena vector `x` memiliki 32 elemen, maka dimensi matriks yang dapat dibuat adalah 2 angka yang hasil perkaliannya menghasilkan nilai 32. Salah satunya adalah 8x4.
+
+```{r}
+mtx <- matrix(data = x, nrow = 8, ncol = 4) 
+mtx
+
+```
+
+Secara default matriks yang dibuat akan menempatkan setiap elemen dengan mengisi kolom terlebih dahulu. Argumen `byrow = TRUE` artinya matriks setiap elemen `x` akan diisikan ke `mtx` dengan memenuhi baris terlebih dahulu. Jika `byrow = FALSE` (default) maka setiap elemen `x` diisikan ke `mtx` berdasarkan kolom terlebih dahulu.
+
+```{r}
+matrix(data = 1:10, ncol = 5, nrow = 2, byrow = TRUE)
+matrix(data = 1:10, ncol = 5, nrow = 2, byrow = FALSE)
+
+```
+
+Untuk membuat matriks dengan nilai yang sama seluruhnya, maka dapat dilakukan seperti berikut.
+
+```{r}
+matrix(data = 0, ncol = 5, nrow = 2, byrow = TRUE)
+
+```
+
+Untuk mengakses elemen dari suatu matriks, Anda dapat menggunakan indeks dari baris atau kolomnya.
+
+```{r}
+# Mengambil elemen matriks `m` di baris 4 
+mtx[4, ]
+
+# Mengambil elemen matriks `m` di kolom 3 
+mtx[, 3]
+
+# Mengambil elemen matriks `m` di baris 4 dan kolom 3 
+mtx[4, 3]
+
+# Mengambil elemen matriks `m` di baris 4 dan 6, dan kolom 3 
+mtx[c(4, 6), 3]
+
+```
+
+R menyediakan sebuah fungsi yaitu `diag()` untuk mengakses nilai-nilai pada diagonal utama sebuah matriks.
+
+```{r}
+diag(mtx)
+
+```
+
+Anda juga dapat mengganti nilai dari elemen suatu matriks dengan menggunakan operator assignment.
+
+```{r}
+mtx[4, 3] <- 0 
+mtx[4, 3]
+# perhatikan elemen di baris 4 kolom 3 sudah berubah jadi 0.0
+mtx
+
+```
+
+### Operasi Matriks
+
+
+## Array
+
+Array merupakan objek seperti matriks dengan dimensi lebih banyak. Jika matriks hanya mempunyai 2 dimensi, maka array dapat memiliki lebih dari 2 dimensi. Untuk Array 3 dimensi Anda dapat bayangkan sebagai lapisan beberapa lembar kertas seperti pada gambar di atas. Perhatikan contoh array di bawah ini. Berikut ini merupakan contoh array berdimensi 3 berisi 2 lapis matriks masing-masing berukuran 4 baris dan 4 kolom.
+
+```{r}
+array(mtcars$mpg, dim = c(4, 4, 2))
+
+```
+
+ 
+Gambar 2.1: Ilustrasi Array 3 dimensi
+
+Salah satu array yang ada setelah Anda install R adalah array `Titanic`.
+
+```{r}
+Titanic
+
+```
+
+Untuk mengetahui ukuran dimensi dari sebuah array `Titanic` dapat menggunakan fungsi `dim()`. Artinya array `Titanic` adalah array 4 dimensi.
+
+```{r}
+dim(Titanic)
+
+```
+
+
+## Dataframe
+
+Dataframe layaknya sebuah tabel di Ms Excel, terdiri dari baris dan kolom dengan nama masing-masing kolom berbeda. Apa bedanya dengan matriks? Matriks hanya bisa menyimpan tipe data yang sama, numeric atau character seluruhnya. Pada dataframe, masing-masing kolom boleh memiliki tipe data yang berbeda. Dataframe seperti umumnya bentuk tabel yang sering kita gunakan.
+
+Contoh dataframe yang ada di dalam R salah satunya adalah `mtcars`.
+
+```{r}
+mtcars
+```
+
+Umumnya ketika Anda melakukan analisis data, maka data yang Anda gunakan adalah berupa tabel. Di dalam R sebuah tabel yang terdiri dari baris dan kolom disebut dataframe atau data.frame. Baris di dataframe disebut `observation` dan kolom disebut `variable` (Gambar 2.2).
+
+Untuk membuat sebuah dataframe Anda dapat menggunakan fungsi `data.frame()`. Misalnya Anda akan membuat sebuah dataframe bernama data1 yang berisi 5 observation dan 2 variable. Variable pertama bernama `x1` berisi sebuah vector numeric dengan nilai {1, 3, 2, 6, 4} dan variable kedua bernama `v1` berisi vector character dengan nilai {"a", "A", "c", "d", "E"}. Anda dapat membuat vector `x1` dan `v1` terlebih dahulu menggunakan fungsi `c()` (atau fungsi lain yang sesuai untuk membuat vector). Kemudian membuat dataframe dari vector tersebut. Perhatikan contoh berikut ini.
+ 
+Gambar 2.2: Dataframe Terstruktur (sumber: https://r4ds.had.co.nz/tidy-data.html)
+
+```{r}
+x1 <- c(1, 3, 2, 6, 4) 
+v1 <- c("a", "A", "c", "d", "E") 
+data1 <- data.frame(x1 = x1, v1 = v1)
+
+```
+
+
+Anda dapat melihat dataframe yang sudah dibuat tersebut dengan memanggil nama objek dataframe.
+
+```{r}
+data1
+
+```
+
+:::{.callout-important}
+**Perhatian!** Ketika Anda membuat sebuah dataframe yang berisi sebuah variable character pada R dengan versi 3.6.3 atau sebelumnya, maka secara otomatis variable dari vector character tersebut akan diubah menjadi variable factor (2.6). Hal ini terjadi karena fungsi `data.frame()` mempunyai sebuah argumen `stringsAsFactors = TRUE`. Pada R versi 4.0.0 atau lebih baru, variable dari vector character akan tetap dijadikan sebuah variable character karena argumen `stringsAsFactors = FALSE`. Tentu saja Anda dapat mengubahnya dengan menambahkan argumen tersebut ketika Anda membuat dataframe.
+:::
+
+```{r}
+data1 <- data.frame(x1 = x1, v1 = v1, stringsAsFactors = TRUE) 
+# atau stringsAsFactors = T 
+
+data1
+
+```
+
+Untuk mengetahui ukuran dimensi sebuah dataframe Anda dapat gunakan fungsi `dim()` seperti yang sudah dicontohkan pada pembahasan array (2.8).
+
+```{r}
+
+dim(data1)
+```
+
+Hasil dari fungsi `dim()` untuk dataframe atau matrix adalah sebuah vector dengan elemen pertama adalah banyaknya observation, sedangkan elemen kedua adalah banyaknya variabel. Pada contoh di atas berarti dataframe data1 memiliki 5 observation dan 2 variabel.
+
+Untuk mengetahui struktur dari sebuah dataframe Anda dapat gunakan fungsi `str()` (_str-ucture_). Dengan fungsi ini Anda dapat memperoleh informasi lebih lengkap dari sebuah dataframe seperti banyaknya observation dan variable, nama-nama variabel, tipe variabel, dan beberapa nilai baris pertama untuk masing-masing variabel.
+
+```{r}
+str(data1)
+
+```
+
+Dari hasil di atas Anda dapat ketahui bahwa objek data1 adalah sebuah dataframe berukuran 5 observation (obs.) dan 2 variable. Nama variable yang ada adalah `x1` dan `v1`. Variabel `x1` adalah variabel bertipe numeric, sedangkan `v1` adalah variable character alias factor. Nilai pada baris pertama dataframe `data1` untuk variabel `x1` adalah 1 dan variable `v1` adalah `"a"`. Nilai `"a"` dikodekan sebagai 1, `"A"` dikodekan sebagai 2, `"c"` dikodekan sebagai 3, dan seterusnya.
+
+Selanjutnya untuk mengambil nilai sebuah variabel dari sebuah dataframe dapat menggunakan tanda dollar (`$`) atau menggunakan indeks. Harus diakui bahwa dalam bahasa pemrograman R, banyak cara yang dapat digunakan untuk melakukan satu pekerjaan yang sama. Perhatikan contoh berikut.
+
+```{r}
+# Menggunakan tanda dollar 
+data1$x1
+
+```
+
+```{r}
+# Menggunakan indeks urutan posisi variable 
+data1[, 1]
+
+```
+
+```{r}
+# Menggunakan double-bracket posisi variable 
+data1[[1]]
+
+```
+
+```{r}
+# Menggunakan nama variable pada indeks 
+data1[, "x1"]
+
+```
+
+Untuk membuat variabel baru Anda dapat menggunakan cara yang hampir sama dan menggunakan assignment. Berikut ini kita akan membuat variabel baru bernama `x2` berupa variable numeric.
+
+```{r}
+data1$x2 <- 1:5 
+data1
+
+```
+
+```{r}
+str(data1)
+
+```
+
+Tipe num artinya variable tersebut adalah numerik `double` dan tipe `int` adalah tipe numerik integer atau diskrit. Kemudian kita buat variabel baru bernama `x3` yang merupakan penjumlahan dari variabel `x1` dan `x2`. 
+
+```{r}
+data1$x3 <- data1$x1 + data1$x2 
+str(data1)
+
+```
+
+Pembahasan lebih lengkap tentang membuat dataframe dari berbagai sumber data di bab 5 dan operasi pada dataframe akan dibahas di bab 6.
+
+
+## List
+
+Objek list pada dasarnya mirip seperti vector, hanya saja tipe elemennya bisa berbeda. Jika pada vector numeric semua elemennya harus berupa numerik. Pada vector character semuanya harus karakter. Pada objek list elemennya dapat berupa vector, factor, matriks, array, dataframe, bahkan list di dalam list atau objek lain seperti model prediktif yang dibuat di R. Contoh membuat list dengan fungsi `list()`.
+
+```{r}
+list(2, "A", c(4, 5, 2), iris[1:5,])
+
+```
+
+Objek list di atas terdiri atas empat elemen yang ditandai dengan indeks [[1]] sampai dengan [[4]]. Ketika membuat list di atas, setiap element dipisahkan dengan tanda koma. Elemen pertama adalah sebuah nilai scalar, elemen kedua sebuah nilai character, elemen ketiga adalah sebuah vector numerik, dan elemen keempat adalah sebuah dataframe. 
+
+Masing-masing elemen pada list juga dapat diberi nama seperti pada vector.
+
+```{r}
+list("e1" = 2, "e2" = "A", "e3" = c(4, 5, 2), "e4" = iris[1:5,])
+
+```
+
+ 
+Gambar 2.3: Ilustrasi objek di dalam R
+
+Gambar 2.3 menunjukkan ringkasan secara ilustrasi setiap objek data yang sudah kita bahas.
+
+## Tanggal dan Waktu  
+
+
+## Function dan Packages  
+
+Pada dasarnya R adalah bahasa pemrograman functional atau Functional Programming (FP). Wickham (2015) menyatakan bahwa R menyediakan banyak alat untuk pembuatan dan manipulasi fungsi. Secara khusus R memiliki apa yang dikenal sebagai first class function. Anda dapat melakukan apa saja dengan fungsi seperti yang dapat Anda lakukan dengan vector: Anda dapat memasukkan mereka ke dalam sebuah objek, menyimpannya dalam list, menjadikannya sebagai argumen pada fungsi yang lain, membuat fungsi di dalam fungsi, dan bahkan menjadikannya sebagai hasil keluaran dari suatu fungsi.
+
+
+### Menggunakan fungsi  
+
+Karena dibuat untuk memudahkan analisis data, R mempunyai banyak fungsi yang tersedia untuk melakukan analisis statistik. Untuk mendapatkan nilai rata-rata dari sebuah vector numeric Anda dapat langsung gunakan fungsi mean(). Untuk mendapatkan nilai minimum atau maksimum tersedia fungsi min() dan max(). Fungsi sd() dapat digunakan untuk mendapatkan nilai standar deviasi atau fungsi var() untuk mendapatkan nilai ragam (varians). Perhatikan contoh berikut ini.  
+
+```{r}
+x <- seq(1, 100, by = 4) # Rata-rata vector x 
+mean(x)
+
+```
+
+```{r}
+# Minimum dari vector x 
+min(x)
+
+```
+
+```{r}
+# Maksimum dari vector x 
+max(x)
+
+```
+
+Jika Anda ingin mencari nilai minimum dan maksimum sekaligus, Anda dapat gunakan fungsi `range()`. Output dari fungsi ini adalah vector numeric dengan dua elemen berisi nilai minimum dan maksimum.
+
+```{r}
+range(x)
+
+```
+
+Jika Anda ingin mencari nilai statistik lima serangkai (minimum, Q1, Q2 atau median, Q3, maksimum), Anda dapat gunakan fungsi `summary()`.
+
+```{r}
+summary(x)
+
+```
+
+Jika fungsi atau data yang akan Anda gunakan berasal dari sebuah package, maka Anda dapat gunakan fungsi `library()`, `require()` atau klik beri tanda checklist pada tab Packages seperti pada Gambar 2.4 untuk mengaktifkan package tersebut pada session yang sedang Anda gunakan. Tentunya package tersebut harus sudah Anda install sebelumnya. Misalnya Anda ingin menggunakan data `flights` dari package {nycflights23}. Hal pertama Anda harus pastikan package tersebut sudah terinstall dengan baik di R Anda. Jika Anda belum install package tersebut Anda dapat menginstalnya dengan perintah berikut.
+
+```{r}
+#| eval: false
+install.packages("nycflights23")
+```
+
+
+Gambar 2.4: Aktifkan Package pada Tab Packages.  
+
+Ketika Anda akan install sebuah package, nama package tersebut harus berupa string. Anda hanya perlu melakukan satu kali install saja, tidak perlu install ketika setiap kali akan Anda gunakan. Sekarang Anda coba untuk memanggil data `flights` dari package {nycflights23} tanpa mengaktifkan package terlebih dahulu. Maka akan muncul sebuah _error_ yang menyatakan bahwa objek `flights` tidak ditemukan.
+
+```{r}
+#| eval: false
+flights
+## Error: object 'flights' not found
+```
+
+Karena data flights ada di dalam package {nycflights23} maka Anda perlu aktifkan terlebih dahulu package tersebut. Anda dapat mengaktifkannya dengan perintah berikut ini.
+
+```{r}
+library(nycflights23)
+
+```
+
+Kemudian panggil data `flights`. Kita gunakan fungsi `head()` untuk menampilkan beberapa baris pertama saja dari data. Secara default fungsi `head()` akan menampilkan 6 baris pertama saja dari data yang kita sebutkan pada argumen pertamanya.
+
+```{r}
+head(flights)
+
+```
+
+Karena package {nycflights23} sudah Anda aktifkan sebelumnya maka ketika data `flights` dipanggil tidak akan muncul error.
+
+### Membuat fungsi sendiri  
+
+Ketika Anda membuat sebuah script yang akan digunakan berkali-kali namun dengan nilai input yang berbeda-beda, maka ada baiknya script tersebut dibuat menjadi sebuah fungsi atau function sesuai dengan kebutuhan Anda atau **User-Defined Function**. Untuk membuat function di R Anda dapat menggunakan fungsi `function()`. Misalnya Anda mempunyai script seperti berikut.
+
+```{r}
+a <- 5 
+b <- 7 
+d <- a + b 
+d
+
+```
+
+Kemudian ketika Anda ingin menggunakan nilai lain untuk `a` namun dengan nilai `b` yang sama, misalnya `a <- 2`, Anda perlu menjalankan perintah untuk mengganti nilai dari `a` dan menjalankan ulang perintah untuk menghitung nilai dari `d` seperti berikut.
+
+```{r}
+a <- 2 
+d <- a + b 
+d
+```
+
+Jika script di atas dibuat sebuah fungsi, misalnya dengan nama fungsi `sum_ab()`, maka Anda dapat membuatnya seperti berikut ini. Fungsi tersebut memiliki 2 buah parameter atau argumen, yaitu `a` dan `b` berupa nilai numerik. Argumen `a` dan `b` harus diisi ketika memanggil fungsi tersebut. Fungsi `return()` di dalam fungsi `sum_ab()` menentukan nilai yang akan dijadikan keluaran (_output_) dari fungsi `sum_ab()`.
+
+```{r}
+sum_ab <- function(a, b){ 
+  d <- a + b 
+  return(d) 
+}
+
+```
+
+Selanjutnya panggil fungsi tersebut dengan argumen yang diperlukan.
+
+```{r}
+sum_ab(a = 5, b = 7)
+```
+
+Mengubah nilai a <- 2 dapat dilakukan dengan lebih mudah.
+
+```{r}
+sum_ab(a = 2, b = 7)
+```
+
+Bagaimana jika tidak ada argumen yang diberikan ketika memanggil fungsi tersebut? Dalam hal ini akan terjadi _error_. _Error_ yang terjadi karena argumen pada fungsi ini adalah tipe argumen yang harus diisi atau tidak mempunyai nilai default.
+
+```{r}
+#| eval: false
+sum_ab() 
+## Error in sum_ab() : argument "a" is missing, with no default
+```
+
+Apa itu nilai default argumen pada sebuah fungsi? Kita akan sedikit memodifikasi fungsi `sum_ab()` yang sudah dibuat sebelumnya.
+
+```{r}
+sum_ab <- function(a = 1, b = 1){ 
+  d <- a + b 
+  return(d) 
+}
+```
+
+
+Fungsi `sum_ab()` sekarang memiliki nilai default untuk setiap argumennya. Argumen `a` memiliki nilai 1 dan `b` juga 1. Ketika Anda panggil fungsi `sum_ab()` tanpa menuliskan nilai untuk argumennya maka secara default nilai-nilai tersebut yang akan digunakan.
+
+```{r}
+sum_ab()
+sum_ab(a = 5, b = 3)
+```
+
+### Install Package
+
+Package adalah sebuah kumpulan fungsi atau data yang dibuat untuk memudahkan proses di R tanpa harus menuliskan ulang script yang dibutuhkan. Saat ini package menjadi bagian yang sangat penting bagi Data Analyst atau Data Scientist ketika menggunakan R. Karena dengan package tambahan (yang belum ada ketika install R), pekerjaan dalam mengolah data menjadi lebih efisien.
+
+Untuk dapat menggunakan fungsi atau data dari sebuah package tambahan Anda perlu install terlebih dahulu. Salah satu contohnya sudah disampaikan pada bagian 2.11.1, yaitu package {nycflights23}. Selanjutnya Anda dapat install juga package {ggplot2}. Package ini sangat berguna untuk membuat visualisasi data di R. Untuk melihat _help_ dari package ini Anda dapat melakukannya dengan cara yang akan dibahas di bagian 2.12.
+
+Install package di R sangat mudah dengan fungsi `install.packages("namapackage")` atau melalui menu Install di tab Packages di RStudio. Yang perlu Anda perhatikan ketika akan install package adalah koneksi internet, nama package dan repository-nya. Koneksi internet yang baik sangat dibutuhkan ketika install package untuk R mendownload file package tersebut. Selanjutnya nama package juga harus sesuai dari penulisannya, termasuk huruf kapitalnya. Misalnya Anda ingin install package {ggplot2}, maka Anda harus menuliskannya dengan install.packages("ggplot2"). Jika penulisannya tidak sama maka package tersebut tidak akan diinstall. Perhatikan contoh berikut ini.
+
+
+```{r}
+#| eval: false
+install.packages("ggplot")
+## Installing package into ‘C:/Users/aephiday/AppData/Local/R/win-library/4.4’
+## (as ‘lib’ is unspecified)
+## Warning in install.packages :
+##   package ‘ggplot’ is not available for this version of R
+##
+## A version of this package for your version of R might be available elsewhere,
+## see the ideas at
+## https://cran.r-project.org/doc/manuals/r-patched/R-admin.html#Installing-packages
+
+```
+
+Contoh di atas adalah pemberitahuan ketika package yang ingin Anda install tidak tersedia. Ketika nama package yang Anda tuliskan ada di repository maka akan ada pop-up download file package. Sekarang coba perhatikan contoh berikut ini.
+
+```{r}
+#| eval: false
+install.packages("ggplot2")
+## Installing package into
+## ‘C:/Users/aephiday/AppData/Local/R/win-library/4.4’
+## (as ‘lib’ is unspecified)
+## trying URL 
+'https://cran.rstudio.com/bin/windows/contrib/4.4/ggplot2_3.5.1.zip'
+## Content type 'application/zip' length 5010859 bytes (4.8 MB)
+## downloaded 4.8 MB
+##
+## package ‘ggplot2’ successfully unpacked and MD5 sums checked
+##
+## The downloaded binary packages are in
+##	C:\Users\aephiday\AppData\Local\Temp\RtmpwBvg2h\downloaded_packages
+
+```
+
+Hal yang perlu Anda perhatikan selanjutnya adalah repository package. Ada beberapa repository yang digunakan sebagai tempat penyimpanan package. Repository yang paling umum adalah **Comprehensive R Archive Network (CRAN)**. Ketika Anda menggunakan fungsi `install.packages()` maka secara otomatis package yang akan diinstall berasal dari CRAN. Selain itu ada beberapa repository lain seperti GitHub, Bitbucket, Bioconductor dan lain-lain. Pada kesempatan ini hanya akan membahas repository GitHub saja.
+
+Umumnya GitHub digunakan sebagai tempat untuk repository package yang belum ada di CRAN atau versi pengembangan (_development_) yang belum submit ke CRAN. Untuk dapat install package dari GitHub Anda dapat gunakan package {devtools} atau {remotes}. Saya sarankan untuk menggunakan package {devtools} karena dapat Anda gunakan juga untuk membuat package jika dibutuhkan. Anda juga mungkin perlu install RTools versi yang sesuai dengan versi R Anda jika menggunakan OS Windows.
+Misalnya Anda ingin install package {DataExplorer} dari GitHub. Yang perlu Anda ketahui adalah link/username dari repository package tersebut. Repository GitHub package {DataExplorer} adalah <https://github.com/boxuancui/DataExplorer>. Argumen yang dibutuhkan adalah username dan nama repository. Username dari package ini adalah boxuancui dan repository-nya adalah DataExplorer. Anda dapat gunakan perintah berikut ini.
+
+```{r}
+#| eval: false
+install.packages("devtools")
+devtools::install_github("boxuancui/DataExplorer")
+```
+
+
+## Mencari Help Sebuah Fungsi  
+
+Ketika Anda akan menggunakan sebuah fungsi di R ada baiknya untuk Anda mengetahui beberapa hal tentang fungsi tersebut. Yang harus Anda ketahui dari sebuah fungsi paling tidak adalah untuk apa fungsi tersebut digunakan, apa saja argumen yang diperlukan, bagaimana penggunaannya dan output seperti apa yang dihasilkan.  
+
+Misalnya Anda ingin gunakan fungsi `mean()`, maka Anda dapat mengetikkan `?mean` atau `help("mean")`. Jika Anda menggunakan RStudio maka akan muncul halaman help dari fungsi `mean()` di tab Help seperti pada Gambar 2.5.
+
+Umumnya pada sebuah halaman help akan ada informasi fungsi tersebut berasal dari package apa, pada Gambar 2.5 diketahui fungsi `mean()` berasal dari package {base}. Kemudian deskripsi singkat tentang fungsi (Description), penggunaan (Usage), penjelasan setiap argumen pada fungsi tersebut (Arguments), penjelasan lebih detail (Value/Detail, jika ada) dan contoh penggunaan fungsi (Examples, jika ada).
+
+Hal ini jg berlaku jika Anda ingin melihat halaman help dari sebuah data yang ada di R, baik itu dari package {base} ataupun package tambahan yang lain. Misalnya halaman help dari data iris. Ketikkan ?iris pada console RStudio untuk menampilkan halaman help data iris. Dari Gambar 2.6 diketahui bahwa data iris berasal dari package {datasets}.
+
+Jika Anda ingin mencari help sebuah fungsi yang berasal dari package tertentu yang sudah Anda install sebelumnya tetapi belum Anda aktifkan package tersebut, maka Anda dapat gunakan format namespace (`namapackage::namafungsi`). Sebagai ilustrasi Anda dapat mencari help dari fungsi `read_excel()` dari package {readxl} (<https://readxl.tidyverse.org/>). Untuk mencari hellp fungsi tersebut Anda dapat ketikkan `?readxl::read_excel` di console dan akan muncul halaman help seperti pada Gambar 2.7.
+
+Cara lain untuk mencari help di R adalah dengan menggunakan fungsi `help()`. Misalnya untuk help dari fungsi `mean()` Anda ketikkan di console `help('mean")`, `help("iris")` untuk data iris. Untuk melihat help sebuah fungsi dari package yang belum Anda aktifkan, Anda juga harus menyebutkan nama packagenya seperti `help("read_excel", package = "readxl")`. Apa yang terjadi jika Anda tidak menyebutkan nama packagenya?
+
+```{r}
+#| eval: false
+help("read_excel")
+## No documentation for ‘read_excel’ in specified packages and libraries:
+## you could try ‘??read_excel’
+
+```
+
+Tetapi jika Anda sudah mengaktikan package tersebut, baik menggunakan fungsi `library()`, `require()` ataupun dengan klik pada tab **Packages**, Anda tidak perlu menyebutkan nama package tersebut. Cukup mengetikkan `help("read_excel")`.
+
+```{r}
+#| eval: false
+library(readxl) 
+help("read_excel")
+
+```
+
+Untuk melihat help dari suatu package, misalnya package {readxl}, Anda dapat gunakan `help(package = "readxl")`.
+
+ 
+Gambar 2.5: Halaman Help Fungsi mean()
+
+ 
+Gambar 2.6: Halaman Help Data Iris.
+
+  
+Gambar 2.7: Halaman Help Fungsi read_excel()
+
+## R Session  
+
+Ketika kita bekerja dengan R dan membuat objek data atau function, maka kita dapat mengetahui objek yang sudah kita buat tersebut. Saat membuka R atau RStudio, akan ada satu environment yang dibuat. Environment ini dibuat dalam satu sesi (_session_) yang sedang berjalan. Untuk melihat daftar objek yang sudah kita buat dalam satu sesi dapat menggunakan fungsi `ls()`.
+
+```{r}
+x <- 6 
+y <- 5
+ls() 
+```
+
+Dengan perintah di atas kita membuat 2 buah objek vector, yaitu `x` dan `y`. Objek yang dibuat ada di environment pada session yang sedang berjalan. Semua objek tersebut akan terus ada di _environment_ selama session berjalan sampai _session_ R ditutup dengan menutup program R atau RStudio. Ketika menutup _session_ R disarankan untuk tidak menyimpan _workspace image_ agar saat Anda membuka kembali program R atau RStudio tidak berat. 
+
+Seperti yang sudah dibahas sebelumnya pada bagian pemberian nama objek, Anda dapat membuat nama objek yang mengandung titik. 
+
+```{r}
+.a <- 6 
+ls() 
+
+```
+
+Jika kita perhatikan setelah kita membuat objek dengan nama `.a` dan menggunakan fungsi `ls()` hanya muncul nama objek `x` dan `y` yang kita buat sebelumnya. Tetapi jika kita panggil objek `.a` maka akan muncul hasilnya. 
+
+```{r}
+.a 
+## [1] 6
+
+```
+
+Apa yang terjadi? Apakah ini sebuah magic? Tentu bukan.
+
+Ketika kita membuat sebuah objek yang diawali dengan tanda titik maka objek tersebut diperlakukan khusus, yaitu disembunyikan (_hidden_) dari _environment_ namun tetap dapat kita akses. Saat kita memulai _session_ R, secara otomatis ada juga satu objek yang tersembunyi, yaitu _.Random.seed_. Untuk dapat melihat semua objek, termasuk objek yang tersembunyi, gunakan perintah berikut. 
+
+```{r}
+ls(all.names = TRUE) 
+
+```
+
+Jika ada objek yang sudah Anda buat tapi tidak dibutuhkan lagi, salah ketika memberi nama objek dan ingin mengganti nama yang benar kemudian menghapus objek yang salah Namanya, atau Anda ingin menghapus objek yang berukuran sangat besar untuk mendapat memory yang cukup untuk proses selanjutnya, Anda dapat menggunakan fungsi `rm()`. Fungsi `rm()`, singkatan dari _remove_ (agar Anda mudah mengingatnya), digunakan untuk menghapus objek dari _session_ R yang sedang berjalan. Penggunaannya juga sangat mudah. Kiita hanya perlu menuliskan nama objek yang ingin kita hapus dalam fungsi `rm()`. Misalnya kita ingin menghapus objek `.a`, kita dapat tuliskan perintah berikut. Nama objek dapat menggunakan tanda kutip ataupun tidak.
+
+```{r}
+rm(.a) # atau rm(".a")
+ls(all.names = TRUE) 
+
+```
+
+Untuk menghapus beberapa objek bersamaan kita dapat menuliskan semua nama objek dengan dipisahkan koma. Daftar nama objek tersebut tidak boleh di dalam sebuah vector.
+
+```{r}
+a <- 2
+b <- 5
+rm(a, b)
+ls(all.names = TRUE) 
+
+```
+
+```{r}
+#| eval: false
+a <- 2
+b <- 5
+rm(c(a, b))  
+## Error in rm(c(".a", .b)) : ... must contain names or character strings
+
+```
+
+Jika Anda ingin menghapus semua objek yang ada pada _session_ R saat ini secara bersamaan, Anda dapat menuliskan semua nama objek satu per satu atau dengan perintah berikut.
+
+```{r}
+rm(list = ls(all.names = TRUE))  
+ls()
+
+```
+
+Artinya semua objek sudah berhasil dihapus, termasuk objek tersembunyi. Jika Anda menggunakan RStudio, Anda dapat menghapus semua objek dengan mengklik _symbol_ sapu pada tab **Environment**. 
+ 
+Tetapi jika Anda tidak ingin menghapus objek yang tersembunyi, atau dengan kata lain hanya objek yang bisa diketahui  menggunakan fungsi `ls()` saja, Anda dapat menjalankan perintah sebelumnya tanpa argument `all.names = TRUE`. 
+
+```{r}
+.a <- 4
+rm(list = ls())  
+ls(all.names = TRUE)
+## ".a"
+
+```
+
+Terakhir pada Bab ini, untuk menampilkan seluruh informasi dari _session_ yang sedang berjalan saat ini Anda dapat menggunakan fungsi `sessionInfo()` untuk menampilkan semua informasi _session_.
+
+```{r}
+#| eval: false
+sessionInfo()
+## R version 4.4.0 (2024-04-24 ucrt)
+## Platform: x86_64-w64-mingw32/x64
+## Running under: Windows 11 x64 (build 22000)
+## 
+## Matrix products: default
+## 
+## 
+## locale:
+## [1] LC_COLLATE=English_United States.utf8 
+## [2] LC_CTYPE=English_United States.utf8   
+## [3] LC_MONETARY=English_United States.utf8
+## [4] LC_NUMERIC=C                          
+## [5] LC_TIME=English_United States.utf8    
+## 
+## time zone: Asia/Bangkok
+## tzcode source: internal
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## loaded via a namespace (and not attached):
+##  [1] vctrs_0.6.5       cli_3.6.2         knitr_1.46       
+##  [4] rlang_1.1.3       xfun_0.43         stringi_1.8.3    
+##  [7] purrr_1.0.2       pkgload_1.3.4     promises_1.3.0   
+## [10] shiny_1.8.1.1     xtable_1.8-4      glue_1.7.0       
+## [13] htmltools_0.5.8.1 httpuv_1.6.15     pkgbuild_1.4.4   
+## [16] ellipsis_0.3.2    fastmap_1.1.1     lifecycle_1.0.4  
+## [19] memoise_2.0.1     stringr_1.5.1     compiler_4.4.0   
+## [22] miniUI_0.1.1.1    sessioninfo_1.2.2 fs_1.6.3         
+## [25] htmlwidgets_1.6.4 Rcpp_1.0.12       urlchecker_1.0.1 
+## [28] rstudioapi_0.16.0 later_1.3.2       digest_0.6.35    
+## [31] R6_2.5.1          usethis_2.2.3     magrittr_2.0.3   
+## [34] tools_4.4.0       mime_0.12         devtools_2.4.5   
+## [37] profvis_0.3.8     remotes_2.5.0     cachem_1.0.8   
+```
+

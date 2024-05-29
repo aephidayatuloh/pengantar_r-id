@@ -1,0 +1,67 @@
+# Dataframe {#sec-dataframe}
+
+Dataframe atau data frame adalah salah satu struktur data yang penting dalam R, yang memungkinkan Anda untuk mengorganisasi, menganalisis, dan melakukan transformasi data. Dataframe adalah format yang paling umum digunakan dalam analisis data dan pemrograman statistik di R karena fleksibilitasnya dalam menangani berbagai jenis data. Anda telah belajar cara membuat dataframe di bagian 2.9, mengakses data di dalamnya, melihat strukturnya, dan membuat variable baru.
+
+Dalam bab ini hanya mencakup dasar-dasarnya. R memiliki banyak package dan fungsi tambahan yang dapat digunakan untuk analisis data yang lebih canggih. Jika Anda ingin lebih lanjut, Anda dapat menjelajahi ekosistem package seperti {dplyr}, {tidyr}, dan {ggplot2}, yang memungkinkan Anda untuk melakukan analisis data yang lebih mendalam dan visualisasi data yang menarik.
+
+Dengan pemahaman yang baik tentang data frame, Anda akan memiliki landasan yang kuat untuk melakukan analisis data di R dan mengambil keputusan yang didukung oleh bukti data. Dataframe adalah salah satu alat yang paling penting dalam kotak peralatan seorang analis data atau data scientist.
+
+## Karakteristik Dataframe  
+
+Dataframe memiliki struktur data tabular atau structured data, yang berarti data diatur dalam bentuk tabel dengan baris (observasi) dan kolom (variable). Dataframe juga memungkinkan Anda mengga-bungkan variable dengan jenis yang berbeda dalam satu objek. Ini adalah salah satu aspek yang paling kuat dari dataframe. Misalnya, Anda dapat dataframe yang terdiri dari variable yang berisi bilangan bulat (integer), variable yang berisi character (teks), dan variable lain yang berisi factor dalam satu dataframe. Untuk mengetahui tipe variable dan struktur dari dataframe Anda dapat menggunakan function `str()` dari {utils} bawaan R atau glimpse() dari {dplyr}.
+
+```{r}
+str(mtcars)
+
+```
+
+Untuk melihat beberapa baris pertama atau terakhir dari dataframe kita dapat menggunakan function `head()` atau `tail()`. Ini berguna agar kita dapat melihat bentuk data yang kita miliki, seperti isi dari masing-masing variable. Banyaknya baris yang ingin dilihat dapat ditentukan dengan argumen `n`.
+
+```{r}
+head(mtcars, n = 5)
+
+tail(mtcars, n = 5)
+```
+
+Setiap variable dalam dataframe biasanya memiliki label atau nama. Hal ini memudahkan ketika kita ingin merujuk ke variable dengan nama dibandingkan dengan indeks numerik ketika kita mengetahui dan mengingat nama variable pada dataframe. Demikian pula, setiap baris dapat memiliki label unik yang memudahkan identifikasi baris tertentu yang disebut rownames. Rownames merupakan atribut pada dataframe yang benilai unik untuk setiap baris pada dataframe. Rownames seperti indeks yang berupa vector character yang panjangnya sama dengan banyaknya baris dan tidak boleh mengandung missing value. 
+
+```{r}
+rownames(mtcars)
+
+```
+
+## Filtering dan Slicing   
+
+Kita juga dapat mengambil bagian tertentu dari dataframe berdasarkan kriteria yang kita inginkan. Kita dapat memilih baris atau variable yang sesuai dengan kondisi yang diberikan. Ini sangat berguna ketika kita ingin bekerja dengan subset data tertentu. Misalnya, dengan dataframe mtcars kita ingin memilih data yang hanya memiliki 4 dan 6 silinder (`cyl %in% c(4,6)`), dan lebih dari 21 miles per galon (`mpg > 21`). Kita bisa tuliskan kriteria tersebut pada argumen `subset` di dalam function `subset()`.
+
+```{r}
+subset(mtcars, subset = cyl %in% c(4, 6) & mpg > 21)
+
+```
+
+Jika kita ingin memilih variable tertentu saja maka kita bisa tambahkan argumen select pada function `subset()`.
+
+```{r}
+subset(mtcars, subset = cyl %in% c(4, 6) & mpg > 21, 
+         select = c("mpg", "cyl", "hp", "am"))
+
+```
+
+Tentu saja dataframe juga memiliki indeks numerik yang memungkinkan kita untuk mengakses baris dan variable menggunakan angka. Cara ini adalah salah satu cara yang umum digunakan untuk merujuk ke elemen dalam dataframe seperti yang sudah dibahas di bagian 2.9. Misalnya kita ingin mengambil data dari mtcars pada indeks baris 1 hingga 10. 
+
+```{r}
+mtcars[1:10, ]
+
+```
+
+Manipulasi Data: Data frame menyediakan banyak fungsi untuk melakukan manipulasi data seperti penggabungan data (merging), pengurutan (sorting), pengelompokan (grouping), agregasi, transformasi, dan lain-lain. 
+
+Pembacaan dan Penulisan Data: R mendukung berbagai format data, dan Anda dapat dengan mudah mengimpor data ke dalam data frame atau mengekspornya ke berbagai format seperti CSV, Excel, atau database.
+
+Eksplorasi Data: Data frame adalah format yang sangat populer untuk eksplorasi data. Anda dapat dengan mudah membuat visualisasi dan ringkasan statistik dari data frame Anda.
+
+Penyimpanan dalam Memori: Data frame disimpan dalam memori komputer Anda, yang berarti mereka cocok untuk data yang dapat dimuat dalam RAM komputer Anda. Untuk data yang sangat besar, mungkin Anda perlu mempertimbangkan solusi penyimpanan lainnya.
+
+Konsistensi dengan Tidyverse: Data frame adalah bagian integral dari filosofi "tidy data" yang diterapkan oleh banyak package dalam ekosistem tidyverse seperti ggplot2, dplyr, dan tidyr. Ini membuatnya mudah untuk berinteraksi dengan data frame dalam konteks analisis data modern di R.
+
+Data frame adalah alat yang sangat kuat dalam analisis data dan pemrograman statistik di R. Dengan data frame, Anda dapat mengorganisasi, menjelajahi, dan menganalisis data Anda dengan cara yang intuitif dan efisien.

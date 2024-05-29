@@ -1,0 +1,219 @@
+# Import dan Export Data {#sec-import}  
+
+Sebagai alat bantu untuk mengolah, analisis dan visualisasi data sekaligus juga sebagai bahasa pemrograman tentunya R harus memiliki kemampuan untuk membaca data. Oleh karena itu, R dibekali kemampuan membaca data atau import dari file dan database. Selain harus bisa import data, kemampuan lain adalah export data atau hasil analisis data. Tentu saja saat ini sangat banyak tipe data yang didukung oleh R dengan bantuan tambahan package yang sesuai. Namun pada kesempatan ini hanya akan membahas beberapa jenis data file eksternal dan jenis database.
+
+Jalankan program berikut untuk memastikan semua package yang dibutuhkan sudah terinstall.
+
+
+```{r}
+#| eval: false
+req_pkg <- c("readr", "readxl", "writexl", "RMySQL", "RPostgres")
+install.packages(req_pkg[!req_pkg %in% installed.packages()])
+```
+
+## File Eksternal
+
+Jenis file yang akan dibahas adalah textfile (*.txt), CSV (*.csv) dan Excel file.
+
+### Textfile
+
+Textfile adalah salah satu jenis file yang sering digunakan untuk menyimpan atau bertukar data. Fungsi yang sudah tersedia di R untuk import textfile adalah `read.table()` dan `read.delim()`. Apa perbedaan dari kedua fungsi ini? Kita akan membahasnya di bagian ini. 
+
+Yang pertama kita akan membahas fungsi `read.table()`. Untuk mengetahui argumen yang digunakan oleh fungsi ini dan contoh penggunaannya kita dapat lihat pada help dengan mengetik perintah berikut ini di console.
+
+```{r}
+#| eval: false
+?read.table
+```
+
+Misalnya kita akan import data dari file bernama `iris.txt` yang ada di dalam folder `D:\data` dan kita simpan sebagai objek dataframe `iris_txt.` Kita dapat gunakan perintah berikut ini.
+
+```{r}
+#| eval: false
+iris_txt <- read.table("D:/data/iris.txt", header = TRUE)
+```
+
+Karena baris pertama pada file tersebut adalah nama kolom, maka kita tambahkan argumen `header = TRUE`. Jika baris pertama pada file yang akan kita impor adalah bagian dari data, maka kita gunakan argumen `header = FALSE`. Kita lihat beberapa baris pertama dari data yang sudah kita import di atas. Kita gunakan fungsi `head()` untuk melihat 6 (enam) baris pertama paling atas yang ada di dataframe tersebut.
+
+```{r}
+#| eval: false
+
+head(iris_txt)
+```
+
+Jika kita perhatikan, pemisah antar kolom (delimiter) pada file tersebut adalah spasi. Ketika delimiter pada file yang akan kita import berbeda, kita dapat gunakan fungsi `read.delim()`. Penggunaannya hampir sama dengan fungsi `read.table()`. Hanya saja menambahkan argumen `sep = "\t"`. Delimiter default pada fungsi ini adalah tab yang disimbolkan dengan `\t`. Kita cukup mengganti simbol tersebut sesuai dengan yang ada pada file yang akan diimpor. Misalnya ketika delimiter pada file yang akan diimport adalah `|` maka delimiternya menjadi` sep = "|"` seperti contoh berikut ini.
+
+```{r}
+#| eval: false
+iris_delim <- read.delim(file = "D:/data/iris_custom.txt", header = TRUE, sep = "|")
+```
+
+Jika Anda hilangkan argumen `sep = "|"` apa yang terjadi?
+
+Selain menggunakan fungsi dari R sendiri yang sudah kita bahas, ada banyak package yang dapat digunakan untuk import data dari textfile. Salah satunya adalah package {readr} yang menjadi bagian dari package {tidyverse}. Aktifkan package yang dibutuhkan dengan menggunakan fungsi `library()`. Untuk import data dari textfile, salah satunya kita dapat menggunakan fungsi `read_delim()` dari package {readr}.
+
+```{r}
+library(readr) 
+packageVersion("readr")
+```
+
+Sama halnya ketika kita akan import data dari textfile dengan delimiter tertentu seperti yang sudah dibahas ketika menggunakan fungsi `read.delim()`. Kita dapat menggunakan fungsi `read_delim()` seperti di bawah ini. Argumen `file` adalah lokasi dan nama file yang ingin kita import. Kemudian argumen `delim` adalah untuk menunjukkan delimiter/separator/pemisah kolom yang ada pada file tersebut. Argumen `col_names = TRUE` jika baris pertama pada file tersebut adalah nama kolom. Contoh perintah di bawah ini akan menyimpan hasil impor (jika berhasil) ke dalam sebuah objek dataframe bernama iris.
+
+```{r}
+#| eval: false
+iris_txt <- read_delim(file = "D:/data/iris_custom.txt", delim = " ", col_names = TRUE)
+```
+
+### CSV
+
+Selain textfile, CSV juga merupakan format file yang sering digunakan untuk menyimpan atau bertukar data. Fungsi yang tersedia di R untuk dapat mengimpor data dari file CSV adalah `read.csv()` dan `read.csv2()`. Apa perbedaan dari kedua fungsi bersaudara ini? Mari kita bahas.
+
+```{r}
+
+iris_csv <- read.csv(file = "data/iris.csv", header = TRUE) 
+```
+
+Fungsi `read.csv()` digunakan untuk file CSV yang menggunakan simbol koma (`,`) sebagai delimiternya, sedangkan untuk file CSV yang menggunakan simbol titik koma (`;`) sebagai delimiternya kita dapat menggunakan fungsi `read.csv2()`. Package {readr} juga menyiapkan fungsi `read_csv()` untuk import data dari file CSV.
+
+```{r}
+
+library(readr)
+iris2 <- read_csv(file = "data/iris.csv", col_names = TRUE)
+iris2
+```
+
+
+### Excel
+
+Jenis file lain yang juga sering digunakan adalah file Excel. Kita dapat menggunakan package {readxl} dengan fungsi `read_excel()` untuk import data dari file Excel. Argumen `path` adalah lokasi dan nama file Excel yang akan kita gunakan. Terdapat beberapa function yang dapat digunakan untuk import data dari file excel. Anda dapat menggunakan function `read_xls()` jika format file excel yang akan diimport adalah `*.xls` (file excel untuk Ms Office 2003 atau sebelumnya). Jika file excel Anda memiliki format `*.xlsx` (Ms Office 2007 atau lebih baru) dapat menggunakan function `read_xlsx()`. Namun jika Anda tidak tahu format file excel yang Anda miliki maka Anda dapat menggunakan function `read_excel()` yang secara otomatis akan mengenali format file excel Anda. Ketiga function di atas secara otomatis akan membaca data yang ada di worksheet pertama file excel yang disebutkan. 
+
+```{r}
+library(readxl) 
+iris_xl <- read_excel(path = "data/iris.xlsx", col_names = TRUE) 
+iris_xl
+```
+
+Jika Anda memiliki file excel lebih dari satu worksheet dan Anda ingin import data dari worksheet tertentu dan bukan worksheet pertama maka Anda perlu menyebutkan nama dari worksheet tersebut pada argumen `sheet`. Kemudian jika baris pertama adalah nama variable setelah menjadi dataframe maka gunakan argumen `col_names = TRUE`. Sebaliknya jika baris pertama adalah data pada dataframe amka gunakan `col_names = FALSE` atau dengan menyebutkan nama variable dalam bentuk vector character, yaitu `col_names = c("v1", "v2", …)` dimana `v1`, `v2`, dan seterusnya adalah nama variable yang posisinya bersesuaian.  
+
+## Database
+
+R sebagai program untuk statistik dan analisis data juga didukung dengan kemampuan untuk mengakses data pada database. Kita akan demonstrasikan cara import data dari Database Management System (DBMS) MySQL dan PostgreSQL.
+
+### MySQL
+
+Agar R dapat berinteraksi dengan DBMS MySQL kita perlu install package {RMySQL}. Package {RMySQL} hingga saat buku ini ditulis masih mempunyai keterbatasan, yaitu dapat berjalan dengan baik pada DBMS MySQL versi 5. Namun pada MySQL versi 8 tidak dapat eksport/write data dari R menjadi tabel di database. Alternatif untuk hal ini adalah dengan menggunakan package {RMariaDB}
+
+Pertama kita harus membuat koneksi ke database yang akan diakses. Misalnya database yang akan digunakan bernama mydatabase. Perintah di bawah ini tidak dapat Anda jalankan kecuali Anda mempunyai database di lokal komputer Anda dengan pengaturan yang sama.
+
+```{r}
+#| eval: false
+library(RMySQL) 
+my_con <- dbConnect(drv = RMySQL::MySQL(), 
+                    # alamat IP database 
+                    host = "localhost", 
+                    # nama database 
+                    dbname = "mydatabase", 
+                    # user ID 
+                    user = "username", 
+                    # password 
+                    password = "Password", 
+                    # port database 
+                    port = 3306 ) 
+```
+
+Kita dapat mengetahui nama-nama tabel yang ada di dalam database yang kita akses.
+
+```{r}
+#| eval: false
+dbListTables(my_con) 
+```
+
+
+Untuk dapat import tabel dari database menjadi dataframe di R, kita dapat gunakan fungsi `dbReadTable()`. Sebutkan objek koneksi yang sebelumnya kita buat dan nama tabel yang akan kita akses.
+
+```{r}
+#| eval: false
+my_iris <- dbReadTable(my_con, "iris") 
+```
+
+
+Setelah selesai mengakses database, jangan lupa untuk memutus koneksi (disconnect) dengan fungsi `dbDisconnect()`.
+
+```{r}
+#| eval: false
+dbDisconnect(my_con)
+```
+
+### PostgreSQL
+
+DBMS lain yang akan digunakan untuk contoh kali ini adalah PostgreSQL. Ada beberapa package yang dapat digunakan untuk membuat koneksi dan akses DBMS PostgreSQL dari R, diantaranya adalah package {RPostgres} dan {RPostgreSQL}. Kali ini kita akan menggunakan package {RPostgres}. Contoh database yang digunakan kali ini memanfaatkan jasa penyedia layanan database PostgreSQL online secara gratis. Anda dapat mencoba akses database berikut ini jika Anda mempunyai koneksi internet yang cukup baik. Jika Anda mengalami kesulitan atau mengalami kendala ketika mengakses database yang digunakan berikut ini, silahkan hubungi penulis. Anda juga dipersilahkan jika ingin mencoba membuat database sendiri di <https://elephantsql.com>.
+
+```{r}
+library(RPostgres) 
+pg_con <- dbConnect(RPostgres::Postgres(), 
+                    # alamat IP database 
+                    host = "rosie.db.elephantsql.com", 
+                    # port 
+                    port = 5432, 
+                    # nama database 
+                    dbname = "dvwpklac", 
+                    # username 
+                    user = "dvwpklac", 
+                    # password 
+                    password = "7EkOaOYtBrJjQUIhbZ-L4AmUJUEQ1QJC") 
+pg_con
+
+```
+
+Anda dapat mencoba sendiri untuk membuat koneksi dan mengakses database dari PostgreSQL yang sudah disiapkan dan dapat diakses secara remote. Gunakan fungsi `dbListTables()` untuk mengetahui nama tabel yang sudah ada di dalam database tersebut.
+
+```{r}
+dbListTables(pg_con)
+
+```
+
+Sama seperti ketika kita import tabel dari DBMS MySQL, kita gunakan fungsi `dbReadTable()` dengan menyebutkan nama tabel yang akan diimport.
+
+```{r}
+pg_iris <- dbReadTable(pg_con, "iris") 
+head(pg_iris)
+
+```
+
+Untuk ekspor dataframe dari R menjadi tabel di database kita gunakan fungsi `dbWriteTable()`. Argumen `name` adalah nama tabel di DBMS hasil ekspor nanti, `value` adalah nama dataframe yang akan kita ekspor.
+
+```{r}
+dbWriteTable(pg_con, name = "tbl_iris", value = iris, 
+             row.names = FALSE, overwrite = TRUE) 
+dbListTables(pg_con)
+
+```
+
+Terakhir setelah selesai mengakses data yang kita butuhkan selalu putuskan koneksi (disconnect).
+
+```{r}
+dbDisconnect(pg_con)
+
+```
+
+## File RDS
+
+File RDS adalah format file eksternal dari objek yang ada di R. Semua data ketika kita mengolah data di disimpan di dalam memory. Oleh karena itu ketika kita menutup sesi R yang sedang berjalan, maka semua data atau objek yang ada akan hilang. Namun kita bisa ekspor objek yang nantinya ingin kita gunakan kembali di dalam sebuah file eksternal dengan format RDS.
+
+Untuk dapat menggunakan data yang ada di dalam file RDS kita dapat gunakan fungsi `readRDS()` dari package {base} atau `read_rds()` dari package {readr}.
+
+```{r}
+# dari {base} 
+data <- readRDS("data/iris.rds") 
+head(data)
+
+```
+
+```{r}
+# dari package {readr} 
+library(readr)
+data <- read_rds("data/iris.rds")
+head(data)
+
+```
+

@@ -1,0 +1,59 @@
+# Tentang Buku {.unnumbered}  
+
+```{r}
+#| include: false
+source("_common.R")
+```
+
+Buku ini disusun dengan menggunakan `r gsub("on", "", R.version.string)` 64bit pada Windows 11, RStudio versi 2024.4.1.748. Tujuan utama dari buku ini adalah untuk membantu Anda yang ingin mempelajari bahasa pemrograman R dari dasar. Contoh kasus yang disajikan diharapkan dapat memperdalam pemahaman pembaca mengenai materi yang dibahas. Contoh script yang digunakan untuk penyiapan data dan visualisasi serta eksplorasi akan lebih banyak menggunakan script dasar R dan juga menggunakan <a href="https://www.tidyverse.org/" target="_blank">tidyverse</a>.
+
+Di dalam buku ini akan dibahas dasar-dasar R sebagai tools untuk analisis data. Buku ini juga akan membahas cara berinteraksi dengan R melalui RStudio mulai dari _download_ dan install R & RStudio, membahas dasar-dasar pemrograman R, dasar-dasar statistika hingga pengantar analisis regresi. 
+
+[Bab @sec-intro] akan membahas pengenalan cara install dan penggunaan R dan RStudio. Kemudian di [Bab @sec-basicr] akan menjelaskan secara cukup detil apa saja yang perlu Anda ketahui dan kuasai tentang bahasa pemrograman R. Kemudian pada [Bab @sec-if-loop] akan dibahas tentang struktur kendali (if-then-else) dan pengulangan (looping). Di [Bab @sec-import] akan belajar cara import data dari file eksternal, database dan jenis data lainnya. Yang terakhir di [Bab @sec-explore] dan [Bab @sec-ggplot2] akan mulai lebih menyenangkan karena akan membahas cara membuat dan menampilkan hasil eksplorasi dan analisis data dengan visualisasi yang menarik. 
+
+# Bagaimana buku ini disusun  
+
+
+
+# Bagi siapa buku ini?  
+
+Ini adalah buku yang membahas pemrograman R dari dasar dan ditambah dengan pengetahuan dasar terkait analisis statistika dan pemodelan prediktif. Oleh karena itu buku ini cocok bagi para pemula yang baru mulai belajar tentang analisis data atau data science dengan menggunakan R dan RStudio sebagai alat bantu untuk memahami teori dan praktiknya.
+
+## Yang tidak dibahas di buku ini {.unnumbered} 
+
+Buku ini tidak membahas secara detail dari suatu teori atau algoritma. Juga tidak akan membahas teori statistika dan peluang yang digunakan secara mendalam. 
+
+<!--<p style="font-size: 200%;font-weight: bold">Package yang digunakan</p>-->
+# Package yang digunakan {.unnumbered} 
+
+Untuk pengenalan terhadap R akan menggunakan data, fungsi dan package yang sudah ada di R ketika Anda selesai menginstallnya tanpa perlu install package tambahan. Di Bab \@ref(functionandpackage), Bab @sec-import, dan Bab @sec-explore dibutuhkan beberapa package tambahan seperti package {<a href="https://readr.tidyverse.org/" target="_blank">readr</a>} dan {<a href="https://ggplot2.tidyverse.org/" target="_blank">ggplot2</a>}. Perlu dicatat bahwa package-package tersebut bisa saja berubah menyesuaikan dengan yang dilakukan oleh pengembangnya. Oleh karena itu, buku ini juga akan diperbarui ketika memungkinkan. 
+
+
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'nycflights23', 'tidyverse', 'readr', 'dplyr', 'tidyr', 'stringr', 'ggplot2', 'ggthemes'
+), 'packages.bib')
+```
+
+```{r}
+#| eval: true
+#| echo: false
+pkgs <- c('tidyverse', 'readr', 'dplyr', 'tidyr', 'stringr', 'ggplot2', 'nycflights23', 'ggthemes')
+
+data.frame(package = pkgs, 
+           version = lapply(X = pkgs, 
+                            FUN = function(x)
+                              as.character(
+                                packageVersion(x)
+                              )
+                            ) |> 
+             unlist()
+           ) |> 
+  knitr::kable()
+```
+
+
+# Riwayat Pembaruan {.unnumbered}
+
+**July 6, 2024**: membuat insial konten  
