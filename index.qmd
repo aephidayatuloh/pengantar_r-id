@@ -39,7 +39,7 @@ knitr::write_bib(c(
 ```{r}
 #| eval: true
 #| echo: false
-pkgs <- c('tidyverse', 'readr', 'dplyr', 'tidyr', 'stringr', 'ggplot2', 'nycflights23', 'ggthemes')
+pkgs <- c('tidyverse', 'readr', 'tibble', 'dplyr', 'tidyr', 'stringr', 'ggplot2', 'nycflights23', 'ggthemes', 'RMySQL', 'RPostgres')
 
 data.frame(package = pkgs, 
            version = lapply(X = pkgs, 
