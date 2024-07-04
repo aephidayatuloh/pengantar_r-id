@@ -19,7 +19,7 @@ Di dalam buku ini akan dibahas dasar-dasar R sebagai tools untuk analisis data. 
 
 Ini adalah buku yang membahas pemrograman R dari dasar dan ditambah dengan pengetahuan dasar terkait analisis statistika dan pemodelan prediktif. Oleh karena itu buku ini cocok bagi para pemula yang baru mulai belajar tentang analisis data atau data science dengan menggunakan R dan RStudio sebagai alat bantu untuk memahami teori dan praktiknya.
 
-## Yang tidak dibahas di buku ini {.unnumbered} 
+# Yang tidak dibahas di buku ini {.unnumbered} 
 
 Buku ini tidak membahas secara detail dari suatu teori atau algoritma. Juga tidak akan membahas teori statistika dan peluang yang digunakan secara mendalam. 
 
@@ -39,7 +39,7 @@ knitr::write_bib(c(
 ```{r}
 #| eval: true
 #| echo: false
-pkgs <- c('tidyverse', 'readr', 'tibble', 'dplyr', 'tidyr', 'stringr', 'ggplot2', 'nycflights23', 'ggthemes', 'RMySQL', 'RPostgres')
+pkgs <- c('tidyverse', 'readr', 'tibble', 'dplyr', 'tidyr', 'stringr', 'ggplot2', 'nycflights23', 'ggthemes', 'RMySQL', 'RPostgres', 'broom', 'readxl', 'writexl')
 
 data.frame(package = pkgs, 
            version = lapply(X = pkgs, 
