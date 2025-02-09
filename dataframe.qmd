@@ -23,7 +23,7 @@ head(mtcars, n = 5)
 tail(mtcars, n = 5)
 ```
 
-Setiap variable dalam dataframe biasanya memiliki label atau nama. Hal ini memudahkan ketika kita ingin merujuk ke variable dengan nama dibandingkan dengan indeks numerik ketika kita mengetahui dan mengingat nama variable pada dataframe. Demikian pula, setiap baris dapat memiliki label unik yang memudahkan identifikasi baris tertentu yang disebut rownames. Rownames merupakan atribut pada dataframe yang benilai unik untuk setiap baris pada dataframe. Rownames seperti indeks yang berupa vector character yang panjangnya sama dengan banyaknya baris dan tidak boleh mengandung missing value. 
+Setiap variable dalam dataframe biasanya memiliki label atau nama. Hal ini memudahkan ketika kita ingin merujuk ke variable dengan nama dibandingkan dengan indeks numerik ketika kita mengetahui dan mengingat nama variable pada dataframe. Demikian pula, setiap baris dapat memiliki label unik yang memudahkan identifikasi baris tertentu yang disebut rownames. Rownames merupakan atribut pada dataframe yang benilai unik untuk setiap baris pada dataframe. Rownames seperti indeks yang berupa vector character yang panjangnya sama dengan banyaknya baris dan tidak boleh mengandung _missing value_. 
 
 ```{r}
 rownames(mtcars)
